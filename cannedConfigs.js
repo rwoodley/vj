@@ -52,45 +52,10 @@ function getCannedConfigs(mode, generalSettings) {
         configs['skyDome'] = transparentSkyDome();
         // configs['skyDome'] = simpleSkyDome('hdr1.jpg');
     }
-    if (mode == 'tothTetrahedron') { 
-        // aligned as per Toth, page 27.
-
-        var uniforms = TRANSFORM.reimannShaderList.createShader('default');
-        var xx = -3. / Math.sqrt(3.0);    // alignment specified in Toth.
-        generalSettings.cameraPosition = [xx, xx, xx];
-        uniforms.complexEffect3OnOff.value = 0;
-        generalSettings.rotateYAmount = 0.;
-        configs['default'] = {
-            'uniforms': uniforms,
-            'textureType': 'tetraNormal',
-            'geometry': 'tetrahedron',
-            'position': [0, 0, 0],
-            'scale': [1, 1, -1],
-            'rotationAxis': new THREE.Vector3(0, 1, 0),
-            'rotationAngle': Math.PI / 2.
-        }
-        configs['skyDome'] = phongSkyDome();
-    }
     if (mode == 'simple') {     // no riemann surface. fast startup.
         generalSettings.cameraPosition = [-20, -10, 0.];     // expected by trackerUtils.
         generalSettings.rotateYAmount = 0.;
         configs['skyDome'] = simpleSkyDome('hdr1.jpg');
-    }
-    if (mode == 'debug') {     // no self-transparent sphere. fast startup.
-        var uniforms = TRANSFORM.reimannShaderList.createShader('default');
-        generalSettings.cameraPosition = [-1, 0, 0.];     // expected by trackerUtils.
-        uniforms.complexEffect3OnOff.value = 0;
-        uniforms.proximityEffect.value = 2;
-        generalSettings.rotateYAmount = 0.;
-        configs['default'] = {
-            'uniforms': uniforms,
-            'textureType': 'still',
-            'textureName': 'uv.jpg',
-            'geometry': 'sphere',
-            'position': [0, 0, 0],
-            'scale': [1, 1, -1],
-        }
-        configs['skyDome'] = phongSkyDome();
     }
     if (mode == 'rootFindingBot') {
         generalSettings.videoReloadDelayInSeconds = -1;
@@ -118,59 +83,6 @@ function getCannedConfigs(mode, generalSettings) {
                 'scale': [.7, .7, .7],
             };
         configs['skyDome'] = phongSkyDome();
-    }
-    if (mode == 'trianglesWithSomeReflectionPlanes') {
-        generalSettings.rotateYAmount = 0.;
-
-        var uniforms = TRANSFORM.reimannShaderList.createShader('default');
-
-        generalSettings.cameraPosition = [-20, 0, 0.];
-        uniforms.hyperbolicTilingEffectOnOff.value = 1;
-        uniforms.complexEffect3OnOff.value = 0;
-        uniforms.uColorVideoMode.value = 3; // mode == 'hyperbolicTessellation' ?  2 : 3;
-
-        configs['default'] = {
-            'uniforms': uniforms,
-            'textureType': 'still',
-            'textureName': 'uv.jpg',
-            'geometry': 'sphere',
-            'position': [0, 0, 0],
-            'scale': [-1, 1, 1],
-        };
-
-        var uniforms = TRANSFORM.reimannShaderList.createShader('plane1a');
-        configs['plane1a'] = {
-            'uniforms': uniforms,
-            'textureType': 'still',
-            'textureName': 'coolGradient.jpg',
-            'geometry': 'plane',
-            'scale': [11, 11, 11],
-            'position': [0, 0, 0],
-            'rotationAxis': new THREE.Vector3(0, 1, 0),
-            'rotationAngle': Math.PI / 4.
-        }
-        var uniforms = TRANSFORM.reimannShaderList.createShader('plane2a');
-        configs['plane2a'] = {
-            'uniforms': uniforms,
-            'textureType': 'still',
-            'textureName': 'coolGradient.jpg',
-            'geometry': 'plane',
-            'scale': [11, 11, 11],
-            'position': [0, 0, 0],
-            'rotationAxis': new THREE.Vector3(1, 1, 0),
-            'rotationAngle': Math.PI / 4 + Math.PI / 4.
-        }
-        var uniforms = TRANSFORM.reimannShaderList.createShader('plane3a');
-        configs['plane3a'] = {
-            'uniforms': uniforms,
-            'textureType': 'still',
-            'textureName': 'coolGradient.jpg',
-            'geometry': 'plane',
-            'scale': [11, 11, 11],
-            'position': [0, 0, 0],
-            'rotationAxis': new THREE.Vector3(1, 0, 0),
-            'rotationAngle': Math.PI / 4 + Math.PI / 4 + Math.PI / 4
-        }
     }
     if (mode == 'apollonian') {
         var uniforms = TRANSFORM.reimannShaderList.createShader('default');
@@ -292,61 +204,6 @@ function getCannedConfigs(mode, generalSettings) {
                 'scale': [.7, .7, .7],
             };
     }
-    if (mode == 'fareyDiagram') {
-        var detailsObject = TRANSFORM.reimannShaderList.createShader2('default');
-        detailsObject.loadDefaultTextures();
-        var uniforms = detailsObject.currentUniforms;
-        uniforms.hyperbolicTilingEffectOnOff.value = 5;  // hyperbolic Tesselation with canvas overlay.
-
-        generalSettings.cameraPosition = [-10.8, 0, 0.];
-        uniforms.complexEffect3OnOff.value = 0;
-        uniforms.uColorVideoMode.value = 3; // mode == 'hyperbolicTessellation' ?  2 : 3;
-        uniforms.geometryTiming.value = 0;         // apply geometry before or after mobius xforms.
-        generalSettings.rotateYAmount = 0.;
-        configs['default'] = {
-            'uniforms': uniforms,
-            'textureType': 'still',
-            'textureName': 'uv.jpg',
-            'geometry': 'sphere',
-            'position': [0, 0, 0],
-            'scale': [1, 1, -1],
-        }
-        configs['skyDome'] = phongSkyDome();
-
-        var el = document.getElementById('canvas');
-        el.width = 4096; el.height=4096;
-        detailsObject.updateFareyLabelsForMobiusTransform();
-        texture = new THREE.Texture(el);
-        uniforms.iChannelAnimation.value = texture;
-        texture.needsUpdate = true;
-    }
-    if (mode == 'hyperbolicTessellation' || mode == 'hyperbolicTessellation2'
-        || mode == 'bianchi3') {
-
-        var uniforms = TRANSFORM.reimannShaderList.createShader('default');
-        if (mode == 'hyperbolicTessellation')
-            uniforms.hyperbolicTilingEffectOnOff.value = 2
-        if (mode == 'hyperbolicTessellation2')
-            uniforms.hyperbolicTilingEffectOnOff.value = 3
-        if (mode == 'bianchi3')
-            uniforms.hyperbolicTilingEffectOnOff.value = 4
-
-        generalSettings.cameraPosition = [-10.8, 0, 0.];
-        uniforms.complexEffect3OnOff.value = 0;
-        uniforms.uColorVideoMode.value = 3; // mode == 'hyperbolicTessellation' ?  2 : 3;
-        uniforms.geometryTiming.value = 0;         // apply geometry before or after mobius xforms.
-        generalSettings.rotateYAmount = 0.;
-        configs['default'] = {
-            'uniforms': uniforms,
-            'textureType': 'still',
-            'textureName': 'uv.jpg',
-            'geometry': 'sphere',
-            'position': [0, 0, 0],
-            'scale': [1, 1, -1],
-        }
-        configs['skyDome'] = phongSkyDome();
-        // configs['skyDome'] = simpleSkyDome('hdr1.jpg');
-    }
     if (mode == 'triangles') {
         generalSettings.cameraPosition = [-7.8, 4.8, -2.7];
         var uniforms = TRANSFORM.reimannShaderList.createShader('default');
@@ -446,6 +303,11 @@ function getCannedConfigs(mode, generalSettings) {
     }
 
     if (mode == 'flower') {
+        // this is complicated.
+        // We have morphs.
+        // we are using a synthetic texture, which quadrant 0.
+        // The synthetic texture inserts empty space.
+
         generalSettings.videoReloadDelayInSeconds = -1;
         generalSettings.cameraPosition = [10.6, 5.4, 0];
         generalSettings.rotateYAmount = 0.;
@@ -459,7 +321,9 @@ function getCannedConfigs(mode, generalSettings) {
         configs['default'] = {
             'uniforms': uniforms,
             'textureType': 'video',
-            'textureName': '2g.webm',
+            'textureName': 'mersStudio',
+            // 'textureType': 'still',
+            // 'textureName': 'uv.jpg',
             'geometry': 'morphinFlower',
             'position': [0, 0, 0],
             'scale': [1, 1, 1],
