@@ -2,11 +2,11 @@
 // This handles all user editing of uniforms. 
 // It sets up icons on construction.
 // You can change the uniform being edited. 
-this.reimannUniformsEditor = function(
+// API: Constructor, onkeydown, setShaderDetails
+this.legacyEditor = function(
     camera, mediaUtils,
     transformControlsContainerId, complexControlsContainerId, 
-    transformControls2ContainerId, textureControlsContainerId,
-    symmetryUtils
+    transformControls2ContainerId, textureControlsContainerId
 ) {
     var that = this;
     this.camera = camera;
@@ -15,7 +15,6 @@ this.reimannUniformsEditor = function(
     this.transformControls2ContainerId = transformControls2ContainerId;
     this.textureControlsContainerId = textureControlsContainerId;
     this.mediaUtils = mediaUtils;
-    this.symmetryUtils = symmetryUtils;
     this.newWord = '';
 
 	this.initUniformsEditor = function() {
@@ -101,18 +100,8 @@ this.reimannUniformsEditor = function(
                 that.detailsObject.aMobiusTransform = _one;
                 this.newWord = '';
             }
-            this.detailsObject.updateFareyLabelsForMobiusTransform();
 
             that.detailsObject.updateUniformsForMobiusTransform();
-            document.getElementById('matrixText').innerHTML = getMatrixHTML(that.detailsObject.aMobiusTransform);
-            this.newWord = compressWord(this.newWord);
-            document.getElementById('wordText').innerHTML =
-                 this.newWord.replace(/s/g, 'S<sup>-1</sup>').replace(/t/g, 'T<sup>-1</sup>');
-
-            var fraction = that.detailsObject.aMobiusTransform.vmult(_one, _one);
-            var fractionString = formatFraction(fraction[0], fraction[1]);
-            console.log("Fraction = " + fraction[0].displayString() + "/" + fraction[1].displayString());
-            document.getElementById('fractionText').innerHTML = fractionString;            
         }
         if (e.keyCode == 79) {  // o - stop zoom.
             that.mediaUtils.cameraZoom(1.0);
@@ -315,14 +304,6 @@ this.reimannUniformsEditor = function(
         }
     this.nadirMask = function() {
             that.currentUniforms.uNadirMask.value = that.currentUniforms.uNadirMask.value == 1 ? 0 : 1;
-    }
-    this.tetrahedralGroup = function(mode) {
-        if (mode == 1)
-            that.currentUniforms.uApplyMobiusTransform.value = 1;
-        var polyhedronIndex = 2;   // tetrahedron, UV
-        that.symmetryUtils.updateUniformsForNextSymmetry(polyhedronIndex, that.currentUniforms, mode);
-        var labels = that.symmetryUtils.getLabelsAsHTML(polyhedronIndex);
-        document.getElementById('matrixText').innerHTML = labels;
     }
     this.setFixedPoint1 = function() {that.setFixedPoint(1); }
     this.setFixedPoint2 = function() {that.setFixedPoint(2); }

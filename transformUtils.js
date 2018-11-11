@@ -24,7 +24,8 @@ function transformUtils(camera,
                 that.stopRecording();
             }
         }
-        that.reimannShaderEditor.onkeydown(e, extraKey);
+//        that.legacyEditor.onkeydown(e, extraKey);
+        that.keyboardEditor.onkeydown(e, extraKey);
         e.preventDefault();
     }
     this.startRecording = function() {
@@ -62,7 +63,8 @@ function transformUtils(camera,
     }
     mediaUtils.changeMeshBeingEditedOverridable = function(meshName) {
         details = TRANSFORM.reimannShaderList.getShaderDetailsObject(meshName);
-        that.reimannShaderEditor.setShaderDetails(details);
+//        that.legacyEditor.setShaderDetails(details);
+        that.keyboardEditor.setShaderDetails(details);
     }
     this.animate = function() {
         var videoCurrentTime = 0;
@@ -85,15 +87,19 @@ function transformUtils(camera,
 
     detailsObject = TRANSFORM.reimannShaderList.getShaderDetailsObject('default');
 
-    this.reimannShaderEditor = new reimannUniformsEditor(
-        this.camera, this.mediaUtils,
-        transformControlsContainerId, complexControlsContainerId, 
-        transformControls2ContainerId, textureControlsContainerId,
-        new SU2Symmetries()
+//    this.legacyEditor = new legacyEditor(
+//        this.camera, this.mediaUtils,
+//        transformControlsContainerId, complexControlsContainerId,
+//        transformControls2ContainerId, textureControlsContainerId
+//    );
+    this.keyboardEditor = new keyboardEditor(
+        this.camera, this.mediaUtils
     );
-    if (detailsObject != undefined)
-        this.reimannShaderEditor.setShaderDetails(detailsObject);
-    TRANSFORM.reimannShaderList.editor = this.reimannShaderEditor;
+    if (detailsObject != undefined) {
+//        this.legacyEditor.setShaderDetails(detailsObject);
+        this.keyboardEditor.setShaderDetails(detailsObject);
+    }
+    TRANSFORM.reimannShaderList.editor = this.keyboardEditor;
     //TRANSFORM.reimannShaderList.mediaUtils = this.mediaUtils;
 
 

@@ -39,7 +39,7 @@ body {
 }
 .videoPanel {
     position: fixed;
-    bottom: 50%;
+    bottom: 10%;
     width: 95%;
 }
 .cameraPanel {
@@ -49,7 +49,7 @@ body {
 }
 .meshPanel {
     position: fixed;
-    bottom: 60%;
+    bottom: 20%;
     width: 95%;
 }
 .texturePanel {
@@ -96,32 +96,20 @@ body {
 #statsDivInner {
     float: right;                
 }
-#matrixText {
-    display: block; 
-    position: fixed; 
-    top: 10%; 
-    left: 10%; 
-}
-#fractionText {
-    display: block; 
-    position: fixed; 
-    top: 30%; 
-    left: 10%; 
-}
 #wordText {
-    display: block; 
-    position: fixed; 
-    top: 5%; 
-    left: 10%; 
-    font-size: 20px; 
-    color: red;    
+    display: block;
+    position: fixed;
+    top: 95%;
+    left: 90%;
+    font-size: 20px;
+    color: red;
     border: 1px solid white;
 }
 .redText {
-    font-size: 40px; 
-    color: red;    
+    font-size: 40px;
+    color: red;
     border: 1px solid white;
 }
 .redText td {
-    border: 1px solid blue;    
+    border: 1px solid blue;
 }

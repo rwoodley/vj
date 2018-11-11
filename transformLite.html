@@ -27,7 +27,6 @@
         <script src="shaderCode/schottkyCommon.js"></script>
         <script src="shaderCode/schottky.js"></script>
         <script src="shaderCode/mathUtils.js"></script>
-        <script src="shaderCode/symmetryUtils.js"></script>
         <script src="shaderCode/mobiusTransformUtils.js"></script>
         <script src="shaderCode/mainShader_fs.js"></script>
         <script src="shaderCode/outerShader_fs.js"></script>
@@ -35,7 +34,8 @@
 
         <script src="reimannShaderSupport.js"></script>
         <script src="videoManager.js"></script>
-        <script src="reimannShaderEditor.js"></script>
+        <script src="riemannShaderEditors/legacyEditor.js"></script>
+        <script src="riemannShaderEditors/keyboardEditor.js"></script>
         <script src="meshManager.js"></script>
         <script src="meshInventory.js"></script>
         <script src="cannedConfigs.js"></script>
@@ -216,9 +216,7 @@ $().ready(function() {
       controls="true" autoplay="true">
     </video>
   <div id="container"><br /><br /><br /><br /><br />Generating...</div>
-  <div id="matrixText" class='redText'></div>
-  <div id="fractionText" class='redText'></div>
-  <div id="wordText"  class='redText'></div>
+        <div id="wordText"  class='redText'>This is a test.</div>
 
         <div style="position: fixed; top: 30%; width:95%; ">
              <div id='cameraText' class="statusText"></div>
@@ -242,28 +240,28 @@ $().ready(function() {
                 </div>
             </div>
         </div>
-        <div class="texturePanel">
-            <div class="centerAlign">
-                <div id="textureControlsContainerId">
-                    <span class='showhide wideLabel label'>Texture controls:</span>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="transformPanel">
-            <div class="centerAlign">
-                <div id="transformControlsContainerId">
-                    <span class='showhide wideLabel label'>M&ouml;bius transforms:</span>
-                </div>
-            </div>
-        </div>
-        <div class="complexPanel">
-            <div class="centerAlign">
-                <div id="complexControlsContainerId">
-                    <span class='showhide wideLabel label'>Complex transforms:</span>
-                </div>
-            </div>
-        </div>
+        <!--<div class="texturePanel">-->
+            <!--<div class="centerAlign">-->
+                <!--<div id="textureControlsContainerId">-->
+                    <!--<span class='showhide wideLabel label'>Texture controls:</span>-->
+                    <!--</span>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="transformPanel">-->
+            <!--<div class="centerAlign">-->
+                <!--<div id="transformControlsContainerId">-->
+                    <!--<span class='showhide wideLabel label'>M&ouml;bius transforms:</span>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="complexPanel">-->
+            <!--<div class="centerAlign">-->
+                <!--<div id="complexControlsContainerId">-->
+                    <!--<span class='showhide wideLabel label'>Complex transforms:</span>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
         <div class="videoPanel">
             <div class="centerAlign">
                 <div id="videoControlsContainerId">
@@ -271,13 +269,13 @@ $().ready(function() {
                 </div>
             </div>
         </div>
-        <div class="transformPanel2">
-            <div class="centerAlign">
-                <div id="transformControls2ContainerId">
-                    <span class='showhide wideLabel label'>Reset, toggle, etc:</span>
-                </div>
-            </div>
-        </div>
+        <!--<div class="transformPanel2">-->
+            <!--<div class="centerAlign">-->
+                <!--<div id="transformControls2ContainerId">-->
+                    <!--<span class='showhide wideLabel label'>Reset, toggle, etc:</span>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
         <div class="cameraPanel">
             <div class="centerAlign">
                 <div id="cameraControlsContainer">

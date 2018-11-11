@@ -1,5 +1,9 @@
 // This is broken out so key controls can work with multiple meshes
 // In other words, if you press an arrow key, all meshes will rotate.
+// It is not required if you are only working with a single mesh.
+// It only implements a sub-set of the full commands because, no time/no need.
+// It works directly on the uniforms so bypasses legacyEditor/keyboardEditor. Those can still be invoked
+// on a single mesh at a time.
 function keyControls(inMeshNames, e1x, e1y, e2x, e2y) {
     var that = this;
     this.meshNames = inMeshNames;
@@ -11,14 +15,6 @@ function keyControls(inMeshNames, e1x, e1y, e2x, e2y) {
                 that.rotateRight();
             if (e.keyCode == 83)  // s - stop
                 that.rotationOff();
-        }
-        if (e.keyCode == 84) {  // t - tetrahedral symmetry.
-            that.iterateOverMeshes(
-                {},
-                function(unused, meshName, detailsObject, uniforms) {
-                    // TODO
-                }
-            );
         }
     }
     this.init = function(e1x, e1y, e2x, e2y) {
@@ -52,17 +48,17 @@ function keyControls(inMeshNames, e1x, e1y, e2x, e2y) {
                     if (!detailsObject.point2Defined) {
                         var ant = antipode(x,y);
                         uniforms.e2x.value = ant.x;
-                        uniforms.e2y.value = ant.y;	            		
+                        uniforms.e2y.value = ant.y;
                     }
                 }
                 else {
                     uniforms.e2x.value = x;
-                    uniforms.e2y.value = y;	            	
+                    uniforms.e2y.value = y;
                     detailsObject.point2Defined = true;
                     if (!detailsObject.point1Defined) {
                         var ant = antipode(x,y);
                         uniforms.e1x.value = ant.x;
-                        uniforms.e1y.value = ant.y;	            		
+                        uniforms.e1y.value = ant.y;
                     }
                 }
                 console.log("P1 = " + uniforms.e1x.value + "," + uniforms.e1y.value);
@@ -72,7 +68,7 @@ function keyControls(inMeshNames, e1x, e1y, e2x, e2y) {
         );
     };
     this.rotationOff = function() {
-        this.incrementRotateDirection(0);    
+        this.incrementRotateDirection(0);
     };
     this.incrementRotateDirection = function(rotateDirection) {
         this.iterateOverMeshes(
