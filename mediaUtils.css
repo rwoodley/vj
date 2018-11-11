@@ -1,0 +1,78 @@
+.cameraControlIcon { 
+    border: 2px solid; 
+    border-color: #6495ED; margin: 5px; padding: 5px; color: #000000; 
+    background-color: rgba(247,219,79,.6);
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.mselector { 
+    font-size: 8pt;
+    border: 2px solid; 
+    border-color: #6495ED; margin: 5px; padding: 5px; 
+    color: #FFF; 
+    background-color: rgba(167,34,110,.9);
+    width: 60px;
+    height: 15px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 20px;
+}
+.tselector { 
+    font-size: 8pt;
+    border: 2px solid; 
+    border-color: #6495ED; margin: 5px; padding: 5px; 
+    color: #FFF; 
+    background-color: rgba(167,34,110,.9);
+    width: 60px;
+    height: 15px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 20px;
+}
+.eselector { 
+    font-size: 8pt;
+    border: 2px solid; 
+    border-color: #64D2ED; margin: 5px; padding: 5px; 
+    color: #FFF; 
+    background-color: rgba(34, 103, 167, 0.9);
+    width: 60px;
+    height: 15px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 20px;
+}
+.sselector { 
+    font-size: 8pt;
+    border: 2px solid; 
+    border-color: rgb(22, 226, 233); margin: 5px; padding: 5px; 
+    color: #FFF; 
+    background-color: rgb(22, 226, 233);
+    width: 160px;
+    height: 15px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 20px;
+}
+.vselector { 
+    font-size: 8pt;
+    border: 2px solid; 
+    border-color: #6495ED; margin: 5px; padding: 5px; 
+    color: #FFF; 
+    background-color: rgba(236,32,73,.9);
+    width: 60px;
+    height: 15px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 20px;
+}
+.videoControlIcon { 
+    border: 2px solid; 
+    border-color: #6495ED; margin: 5px; padding: 5px; color: #000000; 
+    background-color: rgba(242,107,56,.6);
+    width: 20px; 
+    height: 20px;
+    display: inline-block;
+    vertical-align: middle;
+}
