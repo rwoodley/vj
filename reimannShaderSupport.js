@@ -95,7 +95,6 @@ reimannShaderDetailsObject = function(name) {
 
 
         uMaskType: { type: 'i', value: 0 },
-        uTextureNumber: { type: 'i', value: 0 },
         e1x: { type: 'f', value: 0. },
         e1y: { type: 'f', value: 0. },
         e2x: { type: 'f', value: 0. }, 
@@ -104,7 +103,6 @@ reimannShaderDetailsObject = function(name) {
         loxodromicY: {type: 'f', value: 0. },
         iChannel0:  { type: 't', value: 0 },
         iChannelStillMask1:  { type: 't', value: 0 },
-        iChannelStillMask2:  { type: 't', value: 0 },
         iChannelDelayMask1:  { type: 't', value: 0 },
         iChannelDelayMask2:  { type: 't', value: 0 },
         iChannelDelayMask3:  { type: 't', value: 0 },
@@ -157,7 +155,7 @@ reimannShaderDetailsObject = function(name) {
         // we have to keep loading the texture otherwise the channels all point to the same texture.
         var pathToSubtractionTexture = 'media/placeholderStill.png';
         (new THREE.TextureLoader()).load(pathToSubtractionTexture, function ( texture ) {
-            console.log("reimannShaderSupport.setDefaults(): loading texture for iChannelDelayMask");
+            console.log("reimannShaderSupport.setDefaults(): loading texture for iChannelStillMask1");
             setMipMapOptions(texture);
             that.currentUniforms.iChannelStillMask1.value =  texture; 
         });
@@ -169,7 +167,6 @@ reimannShaderDetailsObject = function(name) {
         (new THREE.TextureLoader()).load(pathToSubtractionTexture, function ( texture ) {
             console.log("reimannShaderSupport.setDefaults(): loading texture for iChannelDelayMask2");
             setMipMapOptions(texture);
-            that.currentUniforms.iChannelStillMask2.value =  texture; 
             that.currentUniforms.iChannelDelayMask2.value =  texture;       // the delay mask needs to be initialized to a still for this to work.
         });
         (new THREE.TextureLoader()).load(pathToSubtractionTexture, function ( texture ) {
@@ -230,14 +227,6 @@ reimannShaderDetailsObject = function(name) {
         if (that.currentUniforms.uMaskType.value == 1 || 
             that.currentUniforms.uMaskType.value == 4 || 
             that.currentUniforms.uMaskType.value == 5) {
-//            if (animationFrame%160 == 0) {
-//                that.currentUniforms.iChannelDelayMask3.value.image = that.currentUniforms.iChannelDelayMask2.value.image;
-//                that.currentUniforms.iChannelDelayMask3.value.needsUpdate = true;
-//                that.currentUniforms.iChannelDelayMask2.value.image = that.currentUniforms.iChannelDelayMask1.value.image;
-//                that.currentUniforms.iChannelDelayMask2.value.needsUpdate = true;
-//                that.currentUniforms.iChannelDelayMask1.value = that.currentUniforms.iChannel0.value.clone();
-//                that.currentUniforms.iChannelDelayMask1.value.needsUpdate = true;
-//            }
             if (animationFrame%160 == 0) {
                 that.currentUniforms.iChannelDelayMask1.value.image = that.currentUniforms.iChannel0.value.image;
                 that.currentUniforms.iChannelDelayMask1.value.needsUpdate = true;

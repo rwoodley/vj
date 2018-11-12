@@ -171,54 +171,6 @@ function getCannedConfigs(mode, generalSettings) {
 
         configs['skyDome'] = phongSkyDome();
     }
-    if (mode == 'couple2') {
-        generalSettings.cameraPosition = [-8.4, 3.6, 10.1];
-        //generalSettings.videoReloadDelayInSeconds = -1;
-        var uniforms = {
-            iChannelStillMask1: { type: 't', value: 0 },
-            iChannelStillMask2: { type: 't', value: 0 },
-        };
-        var pathToSubtractionTexture = 'media/stillMask2.png';
-        (new THREE.TextureLoader()).load(pathToSubtractionTexture, function (texture) {
-            console.log("cannedConfig: loading texture stillMask2");
-            setMipMapOptions(texture);
-            uniforms.iChannelStillMask1.value = texture;
-        });
-        var pathToSubtractionTexture = 'media/stillMask3.png';
-        (new THREE.TextureLoader()).load(pathToSubtractionTexture, function (texture) {
-            console.log("cannedConfig: loading texture stillMask3");
-            setMipMapOptions(texture);
-            uniforms.iChannelStillMask2.value = texture;
-        });
-        configs['greyOutline'] = {
-            'uniforms': uniforms,
-            'textureType': 'outerShaderMaterial',
-            'geometry': 'sphere',
-            'position': [0, 0, 0],
-            'scale': [50, 50, 50],
-        }
-        // this must go after sky dome so transparency works.
-        var uniforms2 = TRANSFORM.reimannShaderList.createShader('default');
-        uniforms2.complexEffect3OnOff.value = 1;
-        uniforms2.textureScaleX.value = 2.25;
-        uniforms2.textureScaleY.value = 2.25;
-        configs['default'] = {
-            'uniforms': uniforms2,
-            'textureType': 'video',
-            'textureName': 'coupleCropped',
-            'geometry': 'sphere',
-            'position': [0, 0, 0],
-            'scale': [1, 1, -1],
-        }
-
-        configs['mirrorBall'] =
-            {
-                'textureType': 'mirror',
-                'geometry': 'sphere',
-                'position': [0, -8., 0],
-                'scale': [.7, .7, .7],
-            };
-    }
     if (mode == 'triangles') {
         generalSettings.cameraPosition = [-7.8, 4.8, -2.7];
         var uniforms = TRANSFORM.reimannShaderList.createShader('default');

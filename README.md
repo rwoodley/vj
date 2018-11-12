@@ -2,7 +2,8 @@
 Mask -
 MM - Reset
 MB - Hit repeatedly to cycle thru colors.
-M1 - Delay Mask
+M1 - Delay Mask. Use black mask to change high-lights.
 M2 - Nothing
-M3 - Still mask- TODO: Update still mask for HPAC.
-M4 -
+M3 - Diff vs saved still.
+M4 - Multi-delay
+M5 - Just like M1 but the background changes colors constantly.

@@ -130,9 +130,6 @@ this.legacyEditor = function(
             _scene.remove(mirrorSphere);
         }
 
-        var textureNumber = e.keyCode - 48;
-        if ((extraKey == 17) && (textureNumber < 10 && textureNumber >= 0))
-            that.currentUniforms.uTextureNumber.value = textureNumber;        
     }
     this.setupTransformControlIcons = function() {
     	var container = document.getElementById(that.transformControlsContainerId);

@@ -12,8 +12,6 @@ var x = `
     uniform sampler2D iChannelDelayMask2;
     uniform sampler2D iChannelDelayMask3;
     uniform sampler2D iChannelStillMask1;
-    uniform sampler2D iChannelStillMask2;
-
 
     uniform sampler2D iChannelAnimation;
 
@@ -72,7 +70,6 @@ var x = `
     uniform vec2 uXform2D;
     uniform int uSymmetryIndex;
     uniform int  uMaskType;
-    uniform int  uTextureNumber;
 
     // === for 3 point mapping..
     uniform bool uThreePointMappingOn;

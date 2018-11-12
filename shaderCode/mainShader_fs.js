@@ -39,13 +39,31 @@ bool checkMaskPointNew(vec4 t1, vec4 t2) {
         (clr.z < threshold)
         );
 }
+vec4 returnTextureOrBlack(vec4 t1, vec4 t2, vec2 uv, vec4 textureValue) {
+    if (checkMaskPointNew(t1, t2))
+        return vec4(0.,0.,0.,0.);
+    else {
+        if (uBlackMask == 0)
+            return textureValue;
+        else if (uBlackMask == 1)
+            return uColorBlack;
+        else if (uBlackMask == 2)
+            return uColor1;
+        else if (uBlackMask == 3)
+            return uColor2;
+        else if (uBlackMask == 4)
+            return uColor3;
+        else
+            return uColor4;
+    }
+}
 vec4 applyMask(vec2 uv, vec2 complexPoint) {        // subtracting t2 from t1.
-    // uMaskType == 1 - delay mask, uses iChannelDelayMask1
-    // uMaskType == 2 - green mask, makes green transparent.
-    // uMaskType == 3 - still mask, uses iChannelStillMask1
-    // uMaskType == 4 - triple delay mask, uses iChannelDelayMask1 & iChannelDelayMask2 & iChannelDelayMask3
-    // uMaskType == 5 - single delay mask, uses iChannelDelayMask1. super-imposed on starting pic.
     // uBlackMask == 1 - black mask
+    // uMaskType == 1 - Delay Mask. Use black mask to change high-lights. uses iChannelDelayMask1.
+    // uMaskType == 2 - green mask. supposedly.
+    // uMaskType == 3 - Diff vs saved still (iChannelStillMask1).
+    // uMaskType == 4 - riple delay mask, uses iChannelDelayMask1 & iChannelDelayMask2 & iChannelDelayMask3
+    // uMaskType == 5 - Just like 1 but the background changes colors constantly.
     vec4 textureValue;
     if (uNadirMask == 1) {
         if (uv.y < .15)
@@ -88,12 +106,7 @@ vec4 applyMask(vec2 uv, vec2 complexPoint) {        // subtracting t2 from t1.
             return vec4(0.,0.,0.,0.);
     }
 
-    // if (uTextureNumber == 0)
-        textureValue = wrappedTexture2D( iChannel0,  uv);
-    // if (uTextureNumber == 1)
-    //     textureValue = wrappedTexture2D( iChannelDelayMask1,  uv);
-    // if (uTextureNumber == 2)
-    //     textureValue = wrappedTexture2D( iChannelStillMask1,  uv);
+    textureValue = wrappedTexture2D( iChannel0,  uv);
 
     if (uMaskType == 0) {
         if (textureValue.a == 0.) {
@@ -115,42 +128,23 @@ vec4 applyMask(vec2 uv, vec2 complexPoint) {        // subtracting t2 from t1.
     vec4 t2;
     vec4 t3;
     vec4 t4;
-    if (uMaskType == 1) {   // delay mask (1) 
-        t2 = wrappedTexture2D( iChannelDelayMask1,  uv);
-        if (checkMaskPointNew(t1, t2))
-            clr = vec4(0.,0.,0.,0.);
-        else {
-            if (uBlackMask == 0)
-                clr = textureValue;
-            else if (uBlackMask == 1)
-                clr = uColorBlack;
-            else if (uBlackMask == 2)
-                clr = uColor1;
-            else if (uBlackMask == 3)
-                clr = uColor2;
-            else if (uBlackMask == 4)
-                clr = uColor3;
-            else
-                clr = uColor4;
-        }
-        return clr;
-
+    t2 = wrappedTexture2D( iChannelDelayMask1,  uv);
+    if (uMaskType == 1) {   // delay mask (1)
+        return returnTextureOrBlack(t1, t2, uv, textureValue);
     }
     if (uMaskType == 5) {   // delay mask (5)
-        // t2 = wrappedTexture2D( iChannelDelayMask1,  uv);
         vec4 stillTexture = wrappedTexture2D( iChannelStillMask1,  uv);
         if (
-            !checkMaskPointNew(stillTexture, t1)
+            checkMaskPointNew(t2, t1)
         ) {
-            clr =  uColorScale;
+            return uColorScale;
         }
         else {
-            clr = textureValue;
+            return returnTextureOrBlack(t1, t2, uv, textureValue);
         }
-        return clr;
 
     }
-    if (uMaskType == 4) {   // double delay mask (4) 
+    if (uMaskType == 4) {   // triple delay mask (4)
         clr = textureValue;
         t2 = wrappedTexture2D( iChannelDelayMask1,  uv);
         t3 = wrappedTexture2D( iChannelDelayMask2,  uv);
