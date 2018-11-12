@@ -11,6 +11,9 @@ this.keyboardHandlers = function(camera, mediaUtils) {
         console.log("SEQUENCE: " + seq);
         var opts = seq.substring(1);
         switch(seq[0]) {
+            case 'D':
+                that.toggleDebugInfo();
+                break;
             case 'G':
                 that.handleGeo(opts, codes);
                 break;
@@ -47,4 +50,33 @@ this.keyboardHandlers = function(camera, mediaUtils) {
                 break;
         }
     }
+    that.handleGeo = function(seq, codes) {
+        switch (seq[0]) {
+            case 'S':
+                that.cameraVectorLength = 1;
+                that.mediaUtils.toggleView("sphere");
+                break;
+            case 'T':
+                that.camera.position.set(-15.0, 1.0, 0.0);
+                that.cameraVectorLength = -1;
+                that.mediaUtils.toggleView("torus");
+                break;
+            case 'P':
+                that.cameraVectorLength = 1;
+                that.mediaUtils.toggleView("plane");
+                break;
+        }
+
+    }
+    this.toggleDebugInfo = function() {
+    	that.currentUniforms.showFixedPoints.value = that.currentUniforms.showFixedPoints.value == 0 ? 1 : 0;
+    	if (that.currentUniforms.showFixedPoints.value == 0) {
+            $('.statusText').hide();
+		}
+		else {
+            $('.statusText').show();
+		}
+
+    }
+
 }

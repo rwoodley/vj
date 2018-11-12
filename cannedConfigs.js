@@ -68,7 +68,7 @@ function getCannedConfigs(mode, generalSettings) {
             'textureName': 'theta',
             'geometry': 'sphere',
             'position': [0, 0, 0],
-            'scale': [1, 1, -1],
+            'scale': [1, 1, 1],         // if you don't want the image reflect set to [-1,1,1]
         }
         configs['skyDome'] = phongSkyDome();
     }
@@ -234,14 +234,14 @@ function getCannedConfigs(mode, generalSettings) {
         configs['skyDome'] = phongSkyDome();
     }
     if (mode == 'torusDance') {
-        generalSettings.cameraPosition = [-7.8, 4.8, -2.7];
+        generalSettings.cameraPosition = [7.8, 4.8, 2.7];
         generalSettings.videoReloadDelayInSeconds = 1;
 
         var uniforms = TRANSFORM.reimannShaderList.createShader('default');
         configs['default'] = {
             'uniforms': uniforms,
             'textureType': 'video',
-            'textureName': 'dance200',
+            'textureName': 'mersStudio',
             'geometry': 'torus',
             'position': [0, 0, 0],
             'scale': [1, 1, 1],

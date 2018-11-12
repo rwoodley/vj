@@ -57,5 +57,43 @@ this.keyboardEditor = function(
         that.keyboardHandlers.setShaderDetails(detailsObject);
     }
     this.updateVariousNumbersForCamera = function() {
+        if (that.keyboardHandlers.detailsObject == undefined) return;
+        // Camera coordinates are in three.js space where Y is up.
+        // We want to deal with traditional math coordinates where Z is up
+    	var unitVector = (new THREE.Vector3()).copy(that.camera.position).normalize();
+		// in three.js y is up. we want z to be up.
+        // also we need to flip z and x.
+		var y = unitVector.x;
+		var x = unitVector.z;	// assign z to x.
+		var z = unitVector.y;	// assign y to z.
+
+
+    	try {
+            _textElement = document.getElementById('cameraText');
+            _textElement.innerHTML = "<nobr>Camera in three.js coords: (" + _camera.position.x.toFixed(1)
+                + "," + _camera.position.y.toFixed(1) + ","
+                + _camera.position.z.toFixed(1) + ") len: "
+                + _camera.position.length().toFixed(1) + "</nobr>" ;
+
+            var mess =
+            "<nobr>Camera in Cartesian Space: (" +
+            	x.toFixed(1) + "," +
+            	y.toFixed(1) + "," +
+                z.toFixed(1) + "" +
+                ") len: "
+				+ unitVector.length().toFixed(1) + "</nobr>" ;
+            // console.log(mess);
+            document.getElementById('unitVectorText').innerHTML = mess;
+
+            document.getElementById('windowSizeText').innerHTML = "Window (wxh): " +
+            	window.innerWidth + " , " + window.innerHeight;
+
+            document.getElementById('canvasSizeText').innerHTML = "Canvas (wxh): " +
+            	        document.getElementsByTagName( 'canvas' )[0].style.width  +
+                " , " +
+            	        document.getElementsByTagName( 'canvas' )[0].style.height;
+
+ 		}
+		catch (x) {}
     }
 }
