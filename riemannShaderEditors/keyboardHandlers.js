@@ -34,13 +34,14 @@ this.keyboardHandlers = function(camera, mediaUtils) {
     that.handleMask = function(seq, codes) {
         var opts = seq.substring(1);
         switch (seq[0]) {
-            case 'R':   // reset
+            case 'M':   // reset
                 that.currentUniforms.uBlackMask.value = 0;
                 that.currentUniforms.uMaskType.value = 0;
                 break;
             case 'B':
-                that.currentUniforms.uBlackMask.value = that.currentUniforms.uBlackMask.value == 1 ? 0 : 1;
-                break;
+                 that.currentUniforms.uBlackMask.value++;
+                 that.currentUniforms.uBlackMask.value = that.currentUniforms.uBlackMask.value%5 ;
+               break;
             default:
                 that.currentUniforms.uMaskType.value = parseInt(seq[0]);
                 break;

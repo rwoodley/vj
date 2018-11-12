@@ -21,7 +21,6 @@ this.keyboardEditor = function(
         // normally a 2 letter code unless starts with Z. Then collects until next Z. R resets always.
         var x = event.charCode || event.keyCode;  // Get the Unicode value
         var letter = String.fromCharCode(x);  // Convert the value into a character
-        console.log("Letter is " + letter + ", key code = " + e.keyCode + ", charCode " + e.charCode);
 
         if (letter == 'R') {
             that.extendedSequence = false;

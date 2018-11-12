@@ -1,5 +1,4 @@
 SHADERCODE = {
-    animationUtils: "",
     mathUtils: "",
     schottkyUtils: "",
     mobiusTransformUtils: ""
@@ -16,7 +15,6 @@ var x = `
     uniform sampler2D iChannelStillMask2;
 
 
-    uniform int uAnimationEffect;
     uniform sampler2D iChannelAnimation;
 
     varying vec2 vUv;  

@@ -23,7 +23,6 @@
         <script src="myGeometries.js"></script>
 
         <script src="shaderCode/main.js"></script>
-        <script src="shaderCode/animation.js"></script>
         <script src="shaderCode/schottkyCommon.js"></script>
         <script src="shaderCode/schottky.js"></script>
         <script src="shaderCode/mathUtils.js"></script>
@@ -72,9 +71,12 @@ var Params  = function() {
     this.color1 = 0;
     this.threshold1 = 0;
     this.color0 = [ 0, 128, 255, 1.0 ]; // RGB with alpha
-    this.color1 = [ 128, 0, 0, 1.0 ]; // RGB with alpha
-    this.color2 = [ 0, 128, 0, 1.0 ]; // RGB with alpha
-    this.color3 = [ 128, 0, 255, 1.0 ]; // RGB with alpha
+    this.color1 = [ 255, 255, 0, 1.0 ]; // RGB with alpha
+    this.color2 = [ 255, 75, 0, 1.0 ]; // RGB with alpha
+    this.color3 = [ 231, 15, 245, 1.0 ]; // RGB with alpha
+    <!--this.color1 = [ 128, 0, 0, 1.0 ]; // RGB with alpha-->
+    <!--this.color2 = [ 0, 128, 0, 1.0 ]; // RGB with alpha-->
+    <!--this.color3 = [ 128, 0, 255, 1.0 ]; // RGB with alpha-->
     this.color4 = [ 128, 255, 128, 1.0 ]; // RGB with alpha
     this.colorBlack = [ 1., 0, 0, 1.0 ]; // RGB with alpha
 }

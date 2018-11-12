@@ -23,13 +23,13 @@ vec2 getNewUVForWrappedTexture(vec2 inUV) {
 vec4 wrappedTexture2D(sampler2D texture, vec2 inUV) {
     vec2 uv = getNewUVForWrappedTexture(inUV);
     if (uv.x < 0.) 
-    return 
-        vec4(0.0,0.0,0.0,0.0);
+        return vec4(0.0,0.0,0.0,0.0);
     else {
         return texture2D(texture, uv);    
     }
 }
 bool checkMaskPointNew(vec4 t1, vec4 t2) {
+    // returns true if textures have approx the same value at point
     vec4 clr = abs(t1-t2);
     float threshold = .1;
     return
@@ -95,31 +95,6 @@ vec4 applyMask(vec2 uv, vec2 complexPoint) {        // subtracting t2 from t1.
     // if (uTextureNumber == 2)
     //     textureValue = wrappedTexture2D( iChannelStillMask1,  uv);
 
-    if (uAnimationEffect == 1) {
-        // if (uAnimationEffect == 1) {
-        //     vec2 rr = complexPoint;
-        //     if (
-        //         rr.y > 0. && rr.y < .5 && 
-        //         rr.x > 0. && rr.x < .5  
-        //         // abs(mod(rr.x,1.0)) < .5
-        //     ) {
-        //         textureValue.a = 0.;
-        //     }
-        // }
-
-        vec4 temp;
-        temp = drawNyanCat(uv, u3p2);
-        if (temp.a > 0.0)
-            textureValue = temp;
-        temp = drawNyanCat(uv, u3q2);
-        if (temp.a > 0.0)
-            textureValue = temp;
-        temp = drawNyanCat(uv, u3r2);
-        if (temp.a > 0.0)
-            textureValue = temp;
-    }
-
-    
     if (uMaskType == 0) {
         if (textureValue.a == 0.) {
             return textureValue;
@@ -142,15 +117,21 @@ vec4 applyMask(vec2 uv, vec2 complexPoint) {        // subtracting t2 from t1.
     vec4 t4;
     if (uMaskType == 1) {   // delay mask (1) 
         t2 = wrappedTexture2D( iChannelDelayMask1,  uv);
-        if (
-            checkMaskPointNew(t1, t2)
-        )
+        if (checkMaskPointNew(t1, t2))
             clr = vec4(0.,0.,0.,0.);
         else {
-            if (uBlackMask == 1)
-                clr = uColorBlack; // vec4(0.5,.5,1.,1.);
-            else
+            if (uBlackMask == 0)
                 clr = textureValue;
+            else if (uBlackMask == 1)
+                clr = uColorBlack;
+            else if (uBlackMask == 2)
+                clr = uColor1;
+            else if (uBlackMask == 3)
+                clr = uColor2;
+            else if (uBlackMask == 4)
+                clr = uColor3;
+            else
+                clr = uColor4;
         }
         return clr;
 
@@ -174,19 +155,19 @@ vec4 applyMask(vec2 uv, vec2 complexPoint) {        // subtracting t2 from t1.
         t2 = wrappedTexture2D( iChannelDelayMask1,  uv);
         t3 = wrappedTexture2D( iChannelDelayMask2,  uv);
         t4 = wrappedTexture2D( iChannelDelayMask3,  uv);
-        bool checkMask1 = checkMaskPointNew(t1, t2);
-        bool checkMask2 = checkMaskPointNew(t2, t3);
-        bool checkMask3 = checkMaskPointNew(t3, t4);
-        
+        bool checkMask1 = checkMaskPointNew(t2, t1);
+        bool checkMask2 = checkMaskPointNew(t3, t1);
+        bool checkMask3 = checkMaskPointNew(t4, t1);
+
         // if (checkMaskS)
         //     return uColor0;
-        if (checkMask1)
+        if (!checkMask1)
             return uColor1;
-        if (checkMask2)
+        if (!checkMask2)
             return uColor2;
-        if (checkMask3)
-            return uColor4;
-        return uColor3;           // cyan
+        if (!checkMask3)
+            return uColor3;
+        return vec4(0.,0.,0.,0.);           // cyan
     }
     if (uMaskType == 3) {   // still mask (3)
         t2 = wrappedTexture2D( iChannelStillMask1,  uv);
@@ -203,7 +184,7 @@ vec4 applyMask(vec2 uv, vec2 complexPoint) {        // subtracting t2 from t1.
         return clr;
 
     }
-    if (uMaskType == 2) {       // green mask
+    if (uMaskType == 2) {       // green mask -
         vec4 t1 = wrappedTexture2D( iChannel0,  uv);
 
         if (uBlackMask == 1)

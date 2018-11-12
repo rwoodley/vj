@@ -68,7 +68,6 @@ reimannShaderDetailsObject = function(name) {
         textureVAdjustment: { type: 'f', value: 0 },
         uSyntheticTexture: { type: 'i', value: 0 },
         uSyntheticTextureQuadrant: { type: 'f', value: -1 },
-        uAnimationEffect: { type: 'i', value: 0},
         complexEffect1OnOff: { type: 'i', value: 1 },
         complexEffect3OnOff: { type: 'i', value: 0 },
         complexEffect4OnOff: { type: 'i', value: 0 },
@@ -231,6 +230,14 @@ reimannShaderDetailsObject = function(name) {
         if (that.currentUniforms.uMaskType.value == 1 || 
             that.currentUniforms.uMaskType.value == 4 || 
             that.currentUniforms.uMaskType.value == 5) {
+//            if (animationFrame%160 == 0) {
+//                that.currentUniforms.iChannelDelayMask3.value.image = that.currentUniforms.iChannelDelayMask2.value.image;
+//                that.currentUniforms.iChannelDelayMask3.value.needsUpdate = true;
+//                that.currentUniforms.iChannelDelayMask2.value.image = that.currentUniforms.iChannelDelayMask1.value.image;
+//                that.currentUniforms.iChannelDelayMask2.value.needsUpdate = true;
+//                that.currentUniforms.iChannelDelayMask1.value = that.currentUniforms.iChannel0.value.clone();
+//                that.currentUniforms.iChannelDelayMask1.value.needsUpdate = true;
+//            }
             if (animationFrame%160 == 0) {
                 that.currentUniforms.iChannelDelayMask1.value.image = that.currentUniforms.iChannel0.value.image;
                 that.currentUniforms.iChannelDelayMask1.value.needsUpdate = true;
@@ -254,7 +261,6 @@ function getReimannShaderMaterial(texture, uniforms) {
         + SHADERCODE.uniformsAndGlobals()
         + SHADERCODE.mathUtils()
         + SHADERCODE.mobiusTransformUtils()
-        + SHADERCODE.animationUtils()
         + SHADERCODE.schottkyUtilsCommon()
         + SHADERCODE.schottkyUtils()
         + SHADERCODE.mainShader_fs()
