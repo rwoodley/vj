@@ -155,7 +155,7 @@ vec4 applyMask(vec2 uv, vec2 complexPoint) {        // subtracting t2 from t1.
         return clr;
 
     }
-    if (uMaskType == 5) {   // delay mask (5) 
+    if (uMaskType == 5) {   // delay mask (5)
         // t2 = wrappedTexture2D( iChannelDelayMask1,  uv);
         vec4 stillTexture = wrappedTexture2D( iChannelStillMask1,  uv);
         if (

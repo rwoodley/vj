@@ -39,7 +39,7 @@ function cannedRun(scene) {
         that.hideAllControls = mode != null;
         if (mode == null) {
             this.createMode = true;
-            mode = 'uv';
+            mode = 'stream';
         }
         else {
             // default for canned runs, override as needed below
@@ -176,6 +176,28 @@ function cannedRun(scene) {
 				mesh.mesh.add( verticalMirror );
                 _verticalMirror[meshName] = verticalMirror;
             }
+            else if (meshSpecs['textureType'] == 'stream') {
+                mediaUtils.initializeReimannDomeForVideoName(
+                    meshName,
+                    meshSpecs['textureName'],
+                    meshSpecs['geometry'],
+                    meshSpecs['position'],
+                    meshSpecs['scale'],
+                    meshSpecs['rotationAxis'],
+                    meshSpecs['rotationAngle'],
+                    'stream'
+                    );
+                if (that.generalSettings.videoReloadDelayInSeconds > -1) {
+                    mediaUtils.videoManager.onVideoEnded = function () {
+                        console.log("here..........");
+                        window.setTimeout(function () {
+                            console.log("Video is done, reloading.")
+                            location.reload(true);
+                        },
+                            that.generalSettings.videoReloadDelayInSeconds * 1000);
+                    }
+                }
+            }
             else {
                 mediaUtils.initializeReimannDomeForVideoName(
                     meshName, 
@@ -184,7 +206,8 @@ function cannedRun(scene) {
                     meshSpecs['position'],
                     meshSpecs['scale'],
                     meshSpecs['rotationAxis'],
-                    meshSpecs['rotationAngle']
+                    meshSpecs['rotationAngle'],
+                    'video'
                     );
                 if (that.generalSettings.videoReloadDelayInSeconds > -1) {
                     mediaUtils.videoManager.onVideoEnded = function () {

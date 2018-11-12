@@ -2,6 +2,10 @@ this.keyboardHandlers = function(camera, mediaUtils) {
     this.camera = camera;
     this.mediaUtils = mediaUtils;
     var that = this;
+    this.setShaderDetails = function(detailsObject) {
+        that.detailsObject = detailsObject;
+        that.currentUniforms = detailsObject.currentUniforms;
+    }
 
     this.handleSequence = function(seq, codes) {
         console.log("SEQUENCE: " + seq);
@@ -27,7 +31,19 @@ this.keyboardHandlers = function(camera, mediaUtils) {
                 break;
         }
     }
-    that.handleMask = function(opts, codes) {
-
+    that.handleMask = function(seq, codes) {
+        var opts = seq.substring(1);
+        switch (seq[0]) {
+            case 'R':   // reset
+                that.currentUniforms.uBlackMask.value = 0;
+                that.currentUniforms.uMaskType.value = 0;
+                break;
+            case 'B':
+                that.currentUniforms.uBlackMask.value = that.currentUniforms.uBlackMask.value == 1 ? 0 : 1;
+                break;
+            default:
+                that.currentUniforms.uMaskType.value = parseInt(seq[0]);
+                break;
+        }
     }
 }

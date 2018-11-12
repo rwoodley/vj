@@ -243,12 +243,12 @@ function mediaUtils(canned, scene, camera,
     
     }
 	this.toggleVideoControls = function() {
-		if (that.videoManager.videoDisplayed)
+//		if (that.videoManager.videoDisplayed)
 			$('#' + that.videoControlsContainerId).show();
-		else {
-			$('#' + that.videoControlsContainerId).hide();
-			// that.videoManager.video_stop();
-		}
+//		else {
+//			$('#' + that.videoControlsContainerId).hide();
+//			// that.videoManager.video_stop();
+//		}
 	}
     this.animationFrame = 0;
 	this.animate = function(cameraVectorLength, videoCurrentTime) {
@@ -350,11 +350,19 @@ function mediaUtils(canned, scene, camera,
         that.activeMeshName = meshName;
         that.changeMeshBeingEditedOverridable(meshName);
     }
-    this.initializeReimannDomeForVideoName = function(meshName, pid, desiredGeoName, position, scale, rotationAxis, rotationAngle) {
+    this.initializeReimannDomeForVideoName = function(
+            meshName,
+            pid,
+            desiredGeoName,
+            position,
+            scale,
+            rotationAxis,
+            rotationAngle, pidType)
+    {
         if (this.activeMeshName == undefined)
             this.activeMeshName = meshName;
         TRANSFORM.meshInventory.newMesh(meshName, desiredGeoName, position, scale, 'reimann', rotationAxis, rotationAngle);
-        this.updateReimannDomeForVideoName(meshName, pid);
+        this.updateReimannDomeForVideoName(meshName, pid, pidType);
     }
     this.updateReimannDomeForVideoName = function(meshName, pid, pidType) {
         var textureConsumers = [function(videoTexture) {
@@ -362,8 +370,7 @@ function mediaUtils(canned, scene, camera,
                 that.buildMaterialForTexture);
         }];
         if (pidType == 'stream') {
-            that.videoManager.makeStream(meshName, pid, textureConsumers,
-        "stream");
+            that.videoManager.makeStream(meshName, pid, textureConsumers, "stream");
         }
         else {
             that.videoManager.addVideo(meshName, pid, textureConsumers, "video");

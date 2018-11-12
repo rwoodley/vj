@@ -57,6 +57,21 @@ function getCannedConfigs(mode, generalSettings) {
         generalSettings.rotateYAmount = 0.;
         configs['skyDome'] = simpleSkyDome('hdr1.jpg');
     }
+    if (mode == 'stream') {
+        var uniforms = TRANSFORM.reimannShaderList.createShader('default');
+        generalSettings.cameraPosition = [-1, 0, 0.];     // expected by trackerUtils.
+        uniforms.complexEffect3OnOff.value = 0;
+        generalSettings.rotateYAmount = 0.;
+        configs['default'] = {
+            'uniforms': uniforms,
+            'textureType': 'stream',
+            'textureName': 'theta',
+            'geometry': 'sphere',
+            'position': [0, 0, 0],
+            'scale': [1, 1, -1],
+        }
+        configs['skyDome'] = phongSkyDome();
+    }
     if (mode == 'rootFindingBot') {
         generalSettings.videoReloadDelayInSeconds = -1;
         var uniforms = TRANSFORM.reimannShaderList.createShader('default');
@@ -409,7 +424,7 @@ function getCannedConfigs(mode, generalSettings) {
         configs['default2'] = {
             'uniforms': uniforms,
             'textureType': 'video',
-            'textureName': 'LakeStreet',
+            'textureName': 'mersStudio',
             'geometry': 'tsphere',
             'position': [15, 0, 0],
             'scale': [1, 1, 1],

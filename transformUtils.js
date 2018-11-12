@@ -13,9 +13,6 @@ function transformUtils(camera,
             //that.currentUniforms.showFixedPoints.value = 0;
             $('.statusText').hide();
         }
-        if (e.keyCode == 77) {  // 'm'
-            that.useGreenMask();
-        }
         if (e.keyCode == 88 && extraKey == 16) {  // shift-X - start/stop recording
             if (!that.recording) {
                 that.startRecording();
@@ -76,6 +73,7 @@ function transformUtils(camera,
         if (that.capturer != undefined) {
             that.capturer.capture( that.canvas );
         }
+        // Update uniforms. Snatch animationFrame for delay mask if needed.
         TRANSFORM.reimannShaderList.animate(
             that.mediaUtils.animationFrame,
             that.mediaUtils.videoManager.videoDisplayed,
