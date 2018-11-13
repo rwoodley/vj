@@ -9,6 +9,7 @@ this.keyboardEditor = function(
     var that = this;
     this.camera = camera;
     this.mediaUtils = mediaUtils;
+    this.mediaUtils.extraKeyListener = function(extraKey) { that.keyboardHandlers.setShiftPressed(extraKey == 16); }
     this.keyboardHandlers = new keyboardHandlers(camera, mediaUtils);
 
 	this.initUniformsEditor = function() {
@@ -35,7 +36,7 @@ this.keyboardEditor = function(
         if (letter == 'Z') {
             if (that.extendedSequence) {
                 document.getElementById('wordText').innerHTML = '';
-                that.keyboardHandlers.handleSequence(that.cs, that.codes);
+                that.keyboardHandlers.handleSequence(that.cs, that.codes, extraKey);
                 that.extendedSequence = false;
             }
             else {
@@ -49,7 +50,7 @@ this.keyboardEditor = function(
         that.codes.push(e.keyCode);
         if (that.cs.length == 2 && !that.extendedSequence) {
             document.getElementById('wordText').innerHTML = '';
-            that.keyboardHandlers.handleSequence(that.cs, that.codes);
+            that.keyboardHandlers.handleSequence(that.cs, that.codes, extraKey);
             that.cs = '';
             that.codes =[];
             return;

@@ -12,8 +12,11 @@ this.keyboardHandlers = function(camera, mediaUtils) {
     this.setCameraLookAtComplex = function(x, y) {
         that.keyboardHandlerComplex.setCameraLookAtComplex(x,y);
     }
+    this.setShiftPressed = function(shiftPressed) {
+        that.keyboardHandlerComplex.setShiftPressed(shiftPressed);
+    }
 
-    this.handleSequence = function(seq, codes) {
+    this.handleSequence = function(seq, codes, extraKey) {
         console.log("SEQUENCE: " + seq);
         var opts = seq.substring(1);
         switch(seq[0]) {

@@ -34,27 +34,34 @@ function mediaUtils(canned, scene, camera,
 
     this.controlPanelVisible = true;
     this.extraKey = 0;
+    this.extraKeyListener=undefined;
 	document.body.onkeyup = function(e){
-        if (e.keyCode == 16 || e.keyCode == 17  || e.keyCode == 18)
-            this.extraKey = 0;
+        if (e.keyCode == 16 || e.keyCode == 17  || e.keyCode == 18) {
+            that.extraKey = 0;
+            if (that.extraKeyListener != undefined)
+                that.extraKeyListener(that.extraKey);
+        }
     }
 	document.body.onkeydown = function(e){
         //if (!that.canned.createMode) return;
         console.log(e.keyCode);
-        if (e.keyCode == 16 || e.keyCode == 17 || e.keyCode == 18) // shift & ctrl & alt, respectively...
-            this.extraKey = e.keyCode;
+        if (e.keyCode == 16 || e.keyCode == 17 || e.keyCode == 18) { // shift & ctrl & alt, respectively...
+            that.extraKey = e.keyCode;
+            if (that.extraKeyListener != undefined)
+                that.extraKeyListener(that.extraKey);
+        }
         else {
             if(e.keyCode == 32) {
                 that.toggleControlPanel();
             }
-            if (that.extraKey == 0) {
+            if (that.extraKey == 16) {
                 if (e.keyCode == 49)     // '1'
                     that.toggleShowPanel('.tselector');
                 if (e.keyCode == 50)     // '2'
                     that.toggleShowPanel('.vselector');
                 if (e.keyCode == 51)     // '3'
                     that.toggleShowPanel('.eselector');
-} 
+            }
             if (that.onkeydown != undefined) that.onkeydown(e, this.extraKey);
         }
     };
