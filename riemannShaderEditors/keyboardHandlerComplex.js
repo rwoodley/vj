@@ -3,6 +3,7 @@ this.keyboardHandlerComplex = function(camera, mediaUtils) {
     this.mediaUtils = mediaUtils;
     var that = this;
     this.lastDeltaX = 0;
+    this.trackingLoxoPoints = false;
     this.e1 = [0,0];
     this.e2 = [100,100];
     this.cameraLookAt = [1,0];
@@ -19,6 +20,7 @@ this.keyboardHandlerComplex = function(camera, mediaUtils) {
 
     that.MouseWheelHandler = function(e) {
         if (that.shiftPressed && that.currentUniforms.mobiusEffectsOnOff.value == 1) {
+            console.log(e.deltaX, e.deltaY, e.deltaZ, that.lastDeltaX);
             if (e.deltaX < that.lastDeltaX)
                 that.zoom(.8);
             else
@@ -29,7 +31,7 @@ this.keyboardHandlerComplex = function(camera, mediaUtils) {
     }
 
     this.setCameraLookAtComplex = function(x, y) {
-        if (that.shiftPressed && that.currentUniforms.mobiusEffectsOnOff.value == 1)
+        if (this.trackingLoxoPoints)
             that.setLoxoPoint(x,y);
         that.cameraLookAt = [x,y];
     }
@@ -54,6 +56,8 @@ this.keyboardHandlerComplex = function(camera, mediaUtils) {
         switch (seq[0]) {
             case 'L':   // loxo points
                 that.currentUniforms.mobiusEffectsOnOff.value = 1
+                this.trackingLoxoPoints = !this.trackingLoxoPoints;
+
                 break;
             case '1':
                 that.currentUniforms.mobiusEffectsOnOff.value = 1
@@ -66,6 +70,7 @@ this.keyboardHandlerComplex = function(camera, mediaUtils) {
                 break;
             case 'X':   // RESET
                 that.currentUniforms.mobiusEffectsOnOff.value = 0;
+                this.trackingLoxoPoints = false;
                 that.e1 = [0,0];
                 that.e2 = [100,100];
                 that.setLoxoPoint(1,0);
