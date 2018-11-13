@@ -29,6 +29,9 @@ this.keyboardEditor = function(
             document.getElementById('wordText').innerHTML = '';
             return;
         }
+        if (letter == 'Q') {
+            that.fullReset();
+        }
         if (letter == 'Z') {
             if (that.extendedSequence) {
                 document.getElementById('wordText').innerHTML = '';
@@ -54,6 +57,8 @@ this.keyboardEditor = function(
         document.getElementById('wordText').innerHTML = that.cs;
     }
     this.setShaderDetails = function(detailsObject) {
+        that.currentUniforms = detailsObject.currentUniforms;
+        that.detailsObject = detailsObject;
         that.keyboardHandlers.setShaderDetails(detailsObject);
     }
     this.updateVariousNumbersForCamera = function() {
@@ -67,6 +72,14 @@ this.keyboardEditor = function(
 		var x = unitVector.z;	// assign z to x.
 		var z = unitVector.y;	// assign y to z.
 
+    	// convert to point on complex plane
+        // all the signs are flipped because the camera is not sitting at the origin.
+        // it is sitting 1 unit away from the origin, looking thru the origin at the
+        // opposite side of the sphere.
+        var negz = -z;
+    	var cameraLookAtComplexX = - x / (1.0 - negz);
+    	var cameraLookAtComplexY = - y / (1.0 - negz);
+    	this.keyboardHandlers.setCameraLookAtComplex(cameraLookAtComplexX, cameraLookAtComplexY);
 
     	try {
             _textElement = document.getElementById('cameraText');
@@ -85,6 +98,12 @@ this.keyboardEditor = function(
             // console.log(mess);
             document.getElementById('unitVectorText').innerHTML = mess;
 
+            mess = "Looking at " +
+            	cameraLookAtComplexX.toFixed(2) + " + " +
+            	cameraLookAtComplexY.toFixed(2) + "i";
+            // console.log(mess);
+            document.getElementById('complexPointText').innerHTML = mess;
+
             document.getElementById('windowSizeText').innerHTML = "Window (wxh): " +
             	window.innerWidth + " , " + window.innerHeight;
 
@@ -95,5 +114,43 @@ this.keyboardEditor = function(
 
  		}
 		catch (x) {}
+    }
+    this.fullReset = function() {
+    	that.detailsObject.rotateDirection = 0;
+    	that.currentUniforms.iRotationAmount.value = 0;
+    	that.currentUniforms.iGlobalTime.value = 0;
+    	that.detailsObject.point1Defined = false;
+    	that.detailsObject.point2Defined = false;
+    	that.currentUniforms.mobiusEffectsOnOff.value = 0;
+        that.currentUniforms.textureScaleX.value = 1;
+        that.currentUniforms.textureScaleY.value = 1;
+        if (that.currentUniforms.enableTracking.value == 1) {
+            that.detailsObject.trackerUtils.reset();
+        }
+        if (that.currentUniforms.enableAnimationTracking.value == 1) {
+            console.log("noop");
+            // that.detailsObject.trackerUtils.reset();
+        }
+        if (that.currentUniforms.uThreePointMappingOn.value == 1) {
+            that.detailsObject.threePointTracker.reset();
+        }
+        that.currentUniforms.textureUAdjustment.value = 0;
+        that.currentUniforms.textureVAdjustment.value = 0;
+        that.currentUniforms.complexEffect1OnOff.value = 1;
+        // that.currentUniforms.complexEffect2OnOff.value = 0;
+        that.currentUniforms.complexEffect3OnOff.value = 0;
+        that.currentUniforms.complexEffect4OnOff.value = 0;
+        that.currentUniforms.schottkyEffectOnOff.value = 0;
+        that.currentUniforms.fractalEffectOnOff.value = 0;
+        that.currentUniforms.geometryTiming.value = 0;
+        that.currentUniforms.hyperbolicTilingEffectOnOff.value = 0;
+    	that.currentUniforms.e1x.value = that.currentUniforms.e1y.value = that.currentUniforms.e2x.value = that.currentUniforms.e2y.value = 0;
+        that.currentUniforms.loxodromicX.value = 1;
+        that.currentUniforms.loxodromicY.value = 0;
+        that.currentUniforms.tesselate.value = 0;
+        that.currentUniforms.uAlpha.value = 1.0;
+
+        // reseting this can be confusing...
+        // that.currentUniforms.uColorVideoMode.value = 1.0;      // need for outer texture.
     }
 }

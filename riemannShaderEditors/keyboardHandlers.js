@@ -2,9 +2,15 @@ this.keyboardHandlers = function(camera, mediaUtils) {
     this.camera = camera;
     this.mediaUtils = mediaUtils;
     var that = this;
+    this.keyboardHandlerComplex = new keyboardHandlerComplex(camera, mediaUtils);
+
     this.setShaderDetails = function(detailsObject) {
         that.detailsObject = detailsObject;
         that.currentUniforms = detailsObject.currentUniforms;
+        that.keyboardHandlerComplex.setShaderDetails(detailsObject);
+    }
+    this.setCameraLookAtComplex = function(x, y) {
+        that.keyboardHandlerComplex.setCameraLookAtComplex(x,y);
     }
 
     this.handleSequence = function(seq, codes) {
@@ -27,13 +33,20 @@ this.keyboardHandlers = function(camera, mediaUtils) {
                 that.handleEffects(opts, codes);
                 break;
             case 'X':
-                that.handleComplex(opts, codes);
+                that.keyboardHandlerComplex.handleSequence(opts, codes);
                 break;
             case 'T':
                 that.handleTexture(opts, codes);
                 break;
         }
     }
+    that.handleCamera = function(seq, codes) {
+    }
+    that.handleEffects = function(seq, codes) {
+    }
+    that.handleTexture = function(seq, codes) {
+    }
+
     that.handleMask = function(seq, codes) {
         var opts = seq.substring(1);
         switch (seq[0]) {
