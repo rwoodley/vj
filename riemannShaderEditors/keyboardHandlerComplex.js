@@ -2,44 +2,19 @@ this.keyboardHandlerComplex = function(context) {
     this.context = context;
     var that = this;
     this.lastDeltaX = 0;
+    this.trackingLoxoPoints = false;
     this.e1 = [0,0];
     this.e2 = [100,100];
-
-    that.MouseWheelHandler = function(e) {
-        if (that.context.shiftPressed && that.context.currentUniforms.mobiusEffectsOnOff.value == 1) {
-            console.log(e.deltaX, e.deltaY, e.deltaZ, that.lastDeltaX);
-            if (e.deltaX < that.lastDeltaX)
-                that.zoom(.8);
-            else
-                that.zoom(1.25);
-            that.lastDeltaX = e.deltaX;
-            e.preventDefault();
-        }
-    }
-
-    this.animate = function() {
-        if (that.context.ctrlPressed)
-            that.setLoxoPoint(that.context.cameraLookAt[0],that.context.cameraLookAt[1]);
-    }
-
-    var sq = document.getElementsByTagName("BODY")[0];
-	if (sq.addEventListener) {
-		sq.addEventListener("mousewheel", that.MouseWheelHandler, false);
-		sq.addEventListener("DOMMouseScroll", that.MouseWheelHandler, false);
-	}
-	else sq.attachEvent("onmousewheel", that.MouseWheelHandler);
-
-    that.setUniformsFromPoints = function() {
-        that.context.currentUniforms.e1x.value = that.e1[0];
-        that.context.currentUniforms.e1y.value = that.e1[1];
-        that.context.currentUniforms.e2x.value = that.e2[0];
-        that.context.currentUniforms.e2y.value = that.e2[1];
-    }
 
     that.handleSequence = function(seq, codes) {
         var opts = seq.substring(1);
         that.context.currentUniforms.showFixedPoints.value = 0;
         switch (seq[0]) {
+           case 'L':   // loxo points
+                that.currentUniforms.mobiusEffectsOnOff.value = 1
+                this.trackingLoxoPoints = !this.trackingLoxoPoints;
+
+                break;
             case '1':
                 that.context.currentUniforms.mobiusEffectsOnOff.value = 1
                 that.e1 = [that.context.cameraLookAt[0], that.context.cameraLookAt[1]];
@@ -50,6 +25,7 @@ this.keyboardHandlerComplex = function(context) {
                 that.e2 = [that.context.cameraLookAt[0], that.context.cameraLookAt[1]];
                 break;
             case 'Q':   // RESET
+                this.trackingLoxoPoints = false;
                 that.context.currentUniforms.mobiusEffectsOnOff.value = 0;
                 that.e1 = [0,0];
                 that.e2 = [100,100];
@@ -73,6 +49,38 @@ this.keyboardHandlerComplex = function(context) {
                break;
         }
     }
+
+    that.MouseWheelHandler = function(e) {
+        if (that.context.shiftPressed && that.context.currentUniforms.mobiusEffectsOnOff.value == 1) {
+            console.log(e.deltaX, e.deltaY, e.deltaZ, that.lastDeltaX);
+            if (e.deltaX < that.lastDeltaX)
+                that.zoom(.8);
+            else
+                that.zoom(1.25);
+            that.lastDeltaX = e.deltaX;
+            e.preventDefault();
+        }
+    }
+
+    this.animate = function() {
+        if (that.context.ctrlPressed && this.trackingLoxoPoints)
+            that.setLoxoPoint(that.context.cameraLookAt[0],that.context.cameraLookAt[1]);
+    }
+
+    var sq = document.getElementsByTagName("BODY")[0];
+	if (sq.addEventListener) {
+		sq.addEventListener("mousewheel", that.MouseWheelHandler, false);
+		sq.addEventListener("DOMMouseScroll", that.MouseWheelHandler, false);
+	}
+	else sq.attachEvent("onmousewheel", that.MouseWheelHandler);
+
+    that.setUniformsFromPoints = function() {
+        that.context.currentUniforms.e1x.value = that.e1[0];
+        that.context.currentUniforms.e1y.value = that.e1[1];
+        that.context.currentUniforms.e2x.value = that.e2[0];
+        that.context.currentUniforms.e2y.value = that.e2[1];
+    }
+
     this.zoomAmount = 1;
     this.zoom = function(factor) {
         console.log("Zoom factor = ", factor);

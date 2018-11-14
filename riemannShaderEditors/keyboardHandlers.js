@@ -16,9 +16,9 @@ this.keyboardHandlers = function(context) {
             case 'M':
                 that.handleMask(opts, codes);
                 break;
-            case 'C':
-                that.handleCamera(opts, codes);
-                break;
+//            case 'C':
+//                that.keyboardHandlerCamera.handleSequence(opts, codes);
+//                break;
             case 'E':
                 that.handleEffects(opts, codes);
                 break;

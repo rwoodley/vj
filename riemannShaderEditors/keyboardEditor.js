@@ -77,6 +77,7 @@ this.keyboardContext = function (camera, mediaUtils) {
         // reseting this can be confusing...
         // that.currentUniforms.uColorVideoMode.value = 1.0;      // need for outer texture.
     }
+
 }
 
 // This handles all user editing of uniforms.
@@ -88,6 +89,7 @@ this.keyboardEditor = function(
 ) {
     var that = this;
     this.context = new keyboardContext(camera, mediaUtils);
+    that.cameraContext = new cameraContext(camera);
     this.keyboardHandlers = new keyboardHandlers(this.context);
 
     this.setShaderDetails = function(detailsObject) {
@@ -101,6 +103,9 @@ this.keyboardEditor = function(
 	this.codes = [];
 	this.extendedSequence = false;
     this.onkeydown = function(e, extraKey) {
+
+        that.cameraContext.onkeydown(e, extraKey);
+
         // normally a 2 letter code unless starts with Z. Then collects until next Z. R resets always.
         var x = event.charCode || event.keyCode;  // Get the Unicode value
         var letter = String.fromCharCode(x);  // Convert the value into a character

@@ -1,15 +1,18 @@
-this.keyboardHandlerCamera = function(camera, mediaUtils) {
-    this.camera = camera;
-    this.mediaUtils = mediaUtils;
-    var that = this;
-    this.setShaderDetails = function(detailsObject) {
-        that.detailsObject = detailsObject;
-        that.currentUniforms = detailsObject.currentUniforms;
+this.keyboardHandlerCamera = function(context) {
+    this.context = context;
+
+    that.handleSequence = function(seq, codes) {
+        var opts = seq.substring(1);
+        that.context.currentUniforms.showFixedPoints.value = 0;
+        switch (seq[0]) {
+            case 'L':
+                that.cameraRotateLeft();
+                break;
+            case 'R':
+                that.cameraRotateRight();
+                break;
+        }
     }
-    this.setShiftPressed = function(shiftPressed) {
-        if (shiftPressed != that.shiftPressed)
-            console.log(shiftPressed ? "Shift pressed" : "Shift not pressed");
-        that.shiftPressed = shiftPressed;
-    }
+
 
 }

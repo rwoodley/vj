@@ -62,7 +62,7 @@ function mediaUtils(canned, scene, camera,
                 if (e.keyCode == 51)     // '3'
                     that.toggleShowPanel('.eselector');
             }
-            if (that.onkeydown != undefined) that.onkeydown(e, this.extraKey);
+            if (that.onkeydown != undefined) that.onkeydown(e, that.extraKey);
         }
     };
 
@@ -266,32 +266,10 @@ function mediaUtils(canned, scene, camera,
             that.camera.position.x *=-1;
         }
         else {
-            if (1 ==2 && cameraVectorLength > 0 && that.geoIndex == 0) { // sphere
-        		var unitVector = (new THREE.Vector3())
-                    .copy(that.camera.position)
-                    .normalize()
-                    .multiplyScalar(cameraVectorLength);
-                that.camera.position.set(unitVector.x, unitVector.y, unitVector.z);
-            }
-            that.camera.lookAt(new THREE.Vector3(0,0,0));
             TRANSFORM.meshInventory.morphFunction(this.animationFrame);
-            rotateCameraY(that.camera, that.rotateYAmount);
-            rotateCameraUpDown(that.camera, that.rotateXAmount);
-            rotateCameraZ(that.camera, that.rotateZAmount);
-            // if (that.rotateZAmount > 0) {
-            //     console.log("Changing Camera up!");
-            //     that.camera.up.set(0,1,1);
-            // }
-            // that.camera.rotateZ(that.rotateZAmount+that.camera.rotation.z);
-            // console.log(that.camera.rotation.z, that.rotateZAmount);
             for (var verticalMirrorName in _verticalMirror)
                 _verticalMirror[verticalMirrorName].render();
-            // that.camera.rotateY(that.rotateZAmount);
-            // that.camera.rotateX(that.rotateZAmount);
-            that.camera.position.x = that.cameraZoomAmount*that.camera.position.x;
-            that.camera.position.y = that.cameraZoomAmount*that.camera.position.y;
-            that.camera.position.z = that.cameraZoomAmount*that.camera.position.z;
-            
+            TRANSFORM.camera.animate();
         }
         var obj = that.videoManager.animate(that.activeMeshName);
         if (obj.str != undefined)
