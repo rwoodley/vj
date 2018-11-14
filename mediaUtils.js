@@ -224,6 +224,7 @@ function mediaUtils(canned, scene, camera,
 		}
 		else {
             $('.showhide').show();
+            $('.tselector').hide();
             $('#mediaListContainer').show();    // needed to hide all on start.
             $('.dg.ac').show();
         }

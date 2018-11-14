@@ -1,121 +1,32 @@
 
-// This handles all user editing of uniforms.
-// It sets up icons on construction.
-// You can change the uniform being edited.
-// API: Constructor, onkeydown, setShaderDetails
-this.keyboardEditor = function(
-    camera, mediaUtils
-) {
+this.keyboardContext = function (camera, mediaUtils) {
     var that = this;
     this.camera = camera;
     this.mediaUtils = mediaUtils;
-    this.mediaUtils.extraKeyListener = function(extraKey) { that.keyboardHandlers.setShiftPressed(extraKey == 16); }
-    this.keyboardHandlers = new keyboardHandlers(camera, mediaUtils);
-
-	this.initUniformsEditor = function() {
-        //showToast('Hit space bar to show/hide icons.', 2000);
-	}
-	this.cs = "";   // command sequence
-	this.codes = [];
-	this.extendedSequence = false;
-    this.onkeydown = function(e, extraKey) {
-        // normally a 2 letter code unless starts with Z. Then collects until next Z. R resets always.
-        var x = event.charCode || event.keyCode;  // Get the Unicode value
-        var letter = String.fromCharCode(x);  // Convert the value into a character
-
-        if (letter == 'R') {
-            that.extendedSequence = false;
-            that.cs = '';
-            that.codes =[];
-            document.getElementById('wordText').innerHTML = '';
-            return;
-        }
-        if (letter == 'Q') {
-            that.fullReset();
-        }
-        if (letter == 'Z') {
-            if (that.extendedSequence) {
-                document.getElementById('wordText').innerHTML = '';
-                that.keyboardHandlers.handleSequence(that.cs, that.codes, extraKey);
-                that.extendedSequence = false;
-            }
-            else {
-                that.extendedSequence = true;
-            }
-            that.cs = '';
-            that.codes =[];
-            return;
-        }
-        that.cs += letter;
-        that.codes.push(e.keyCode);
-        if (that.cs.length == 2 && !that.extendedSequence) {
-            document.getElementById('wordText').innerHTML = '';
-            that.keyboardHandlers.handleSequence(that.cs, that.codes, extraKey);
-            that.cs = '';
-            that.codes =[];
-            return;
-        }
-        document.getElementById('wordText').innerHTML = that.cs;
+    this.shiftPressed = undefined;
+    this.ctrlPressed = undefined;
+    this.detailsObject = undefined;
+    this.currentUniforms = undefined;
+    this.mediaUtils.extraKeyListener = function(extraKey) {
+        that.shiftPressed = extraKey == 16;
+        that.ctrlPressed = extraKey == 17;
+        if (that.shiftPressed)
+            console.log("Shift Pressed");
+        else if (that.ctrlPressed)
+            console.log("Ctrl Pressed");
+        else
+            console.log("Nothing pressed.")
     }
+    this.cameraLookAt = [1,0];
+
     this.setShaderDetails = function(detailsObject) {
-        that.currentUniforms = detailsObject.currentUniforms;
         that.detailsObject = detailsObject;
-        that.keyboardHandlers.setShaderDetails(detailsObject);
+        that.currentUniforms = detailsObject.currentUniforms;
     }
-    this.updateVariousNumbersForCamera = function() {
-        if (that.keyboardHandlers.detailsObject == undefined) return;
-        // Camera coordinates are in three.js space where Y is up.
-        // We want to deal with traditional math coordinates where Z is up
-    	var unitVector = (new THREE.Vector3()).copy(that.camera.position).normalize();
-		// in three.js y is up. we want z to be up.
-        // also we need to flip z and x.
-		var y = unitVector.x;
-		var x = unitVector.z;	// assign z to x.
-		var z = unitVector.y;	// assign y to z.
-
-    	// convert to point on complex plane
-        // all the signs are flipped because the camera is not sitting at the origin.
-        // it is sitting 1 unit away from the origin, looking thru the origin at the
-        // opposite side of the sphere.
-        var negz = -z;
-    	var cameraLookAtComplexX = - x / (1.0 - negz);
-    	var cameraLookAtComplexY = - y / (1.0 - negz);
-    	this.keyboardHandlers.setCameraLookAtComplex(cameraLookAtComplexX, cameraLookAtComplexY);
-
-    	try {
-            _textElement = document.getElementById('cameraText');
-            _textElement.innerHTML = "<nobr>Camera in three.js coords: (" + _camera.position.x.toFixed(1)
-                + "," + _camera.position.y.toFixed(1) + ","
-                + _camera.position.z.toFixed(1) + ") len: "
-                + _camera.position.length().toFixed(1) + "</nobr>" ;
-
-            var mess =
-            "<nobr>Camera in Cartesian Space: (" +
-            	x.toFixed(1) + "," +
-            	y.toFixed(1) + "," +
-                z.toFixed(1) + "" +
-                ") len: "
-				+ unitVector.length().toFixed(1) + "</nobr>" ;
-            // console.log(mess);
-            document.getElementById('unitVectorText').innerHTML = mess;
-
-            mess = "Looking at " +
-            	cameraLookAtComplexX.toFixed(2) + " + " +
-            	cameraLookAtComplexY.toFixed(2) + "i";
-            // console.log(mess);
-            document.getElementById('complexPointText').innerHTML = mess;
-
-            document.getElementById('windowSizeText').innerHTML = "Window (wxh): " +
-            	window.innerWidth + " , " + window.innerHeight;
-
-            document.getElementById('canvasSizeText').innerHTML = "Canvas (wxh): " +
-            	        document.getElementsByTagName( 'canvas' )[0].style.width  +
-                " , " +
-            	        document.getElementsByTagName( 'canvas' )[0].style.height;
-
- 		}
-		catch (x) {}
+    this.setCameraLookAtComplex = function(x, y) {
+        that.cameraLookAt = [x,y];
     }
+
     this.fullReset = function() {
     	that.detailsObject.rotateDirection = 0;
     	that.currentUniforms.iRotationAmount.value = 0;
@@ -154,4 +65,122 @@ this.keyboardEditor = function(
         // reseting this can be confusing...
         // that.currentUniforms.uColorVideoMode.value = 1.0;      // need for outer texture.
     }
+}
+
+// This handles all user editing of uniforms.
+// It sets up icons on construction.
+// You can change the uniform being edited.
+// API: Constructor, onkeydown, setShaderDetails
+this.keyboardEditor = function(
+    camera, mediaUtils
+) {
+    var that = this;
+    this.context = new keyboardContext(camera, mediaUtils);
+    this.keyboardHandlers = new keyboardHandlers(this.context);
+
+    this.setShaderDetails = function(detailsObject) {
+        that.context.setShaderDetails(detailsObject);
+    }
+
+	this.initUniformsEditor = function() {
+        //showToast('Hit space bar to show/hide icons.', 2000);
+	}
+	this.cs = "";   // command sequence
+	this.codes = [];
+	this.extendedSequence = false;
+    this.onkeydown = function(e, extraKey) {
+        // normally a 2 letter code unless starts with Z. Then collects until next Z. R resets always.
+        var x = event.charCode || event.keyCode;  // Get the Unicode value
+        var letter = String.fromCharCode(x);  // Convert the value into a character
+
+        if (letter == 'R') {
+            that.extendedSequence = false;
+            that.cs = '';
+            that.codes =[];
+            document.getElementById('wordText').innerHTML = '';
+            return;
+        }
+        if (letter == 'Q') {
+            that.context.fullReset();
+        }
+        if (letter == 'Z') {
+            if (that.extendedSequence) {
+                document.getElementById('wordText').innerHTML = '';
+                that.keyboardHandlers.handleSequence(that.cs, that.codes, extraKey);
+                that.extendedSequence = false;
+            }
+            else {
+                that.extendedSequence = true;
+            }
+            that.cs = '';
+            that.codes =[];
+            return;
+        }
+        that.cs += letter;
+        that.codes.push(e.keyCode);
+        if (that.cs.length == 2 && !that.extendedSequence) {
+            document.getElementById('wordText').innerHTML = '';
+            that.keyboardHandlers.handleSequence(that.cs, that.codes, extraKey);
+            that.cs = '';
+            that.codes =[];
+            return;
+        }
+        document.getElementById('wordText').innerHTML = that.cs;
+    }
+    this.updateVariousNumbersForCamera = function() {   // this is called on each frame, so like animate().
+        if (that.context.detailsObject == undefined) return;
+        // Camera coordinates are in three.js space where Y is up.
+        // We want to deal with traditional math coordinates where Z is up
+    	var unitVector = (new THREE.Vector3()).copy(that.context.camera.position).normalize();
+		// in three.js y is up. we want z to be up.
+        // also we need to flip z and x.
+		var y = unitVector.x;
+		var x = unitVector.z;	// assign z to x.
+		var z = unitVector.y;	// assign y to z.
+
+    	// convert to point on complex plane
+        // all the signs are flipped because the camera is not sitting at the origin.
+        // it is sitting 1 unit away from the origin, looking thru the origin at the
+        // opposite side of the sphere.
+        var negz = -z;
+    	var cameraLookAtComplexX = - x / (1.0 - negz);
+    	var cameraLookAtComplexY = - y / (1.0 - negz);
+    	this.context.setCameraLookAtComplex(cameraLookAtComplexX, cameraLookAtComplexY);
+    	this.keyboardHandlers.animate();
+
+    	try {
+            var textElement = document.getElementById('cameraText');
+            textElement.innerHTML = "<nobr>Camera in three.js coords: (" + that.context.camera.position.x.toFixed(1)
+                + "," + that.context.camera.position.y.toFixed(1) + ","
+                + that.context.camera.position.z.toFixed(1) + ") len: "
+                + that.context.camera.position.length().toFixed(1) + "</nobr>" ;
+
+            var mess =
+            "<nobr>Camera in Cartesian Space: (" +
+            	x.toFixed(1) + "," +
+            	y.toFixed(1) + "," +
+                z.toFixed(1) + "" +
+                ") len: "
+				+ unitVector.length().toFixed(1) + "</nobr>" ;
+            // console.log(mess);
+            document.getElementById('unitVectorText').innerHTML = mess;
+
+            mess = "Looking at " +
+            	cameraLookAtComplexX.toFixed(2) + " + " +
+            	cameraLookAtComplexY.toFixed(2) + "i";
+            // console.log(mess);
+            document.getElementById('complexPointText').innerHTML = mess;
+
+            document.getElementById('windowSizeText').innerHTML = "Window (wxh): " +
+            	window.innerWidth + " , " + window.innerHeight;
+
+            document.getElementById('canvasSizeText').innerHTML = "Canvas (wxh): " +
+            	        document.getElementsByTagName( 'canvas' )[0].style.width  +
+                " , " +
+            	        document.getElementsByTagName( 'canvas' )[0].style.height;
+
+ 		}
+		catch (x) {}
+    }
+
 }

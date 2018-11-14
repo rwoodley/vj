@@ -1,20 +1,7 @@
-this.keyboardHandlers = function(camera, mediaUtils) {
-    this.camera = camera;
-    this.mediaUtils = mediaUtils;
+this.keyboardHandlers = function(context) {
+    this.context = context;
     var that = this;
-    this.keyboardHandlerComplex = new keyboardHandlerComplex(camera, mediaUtils);
-
-    this.setShaderDetails = function(detailsObject) {
-        that.detailsObject = detailsObject;
-        that.currentUniforms = detailsObject.currentUniforms;
-        that.keyboardHandlerComplex.setShaderDetails(detailsObject);
-    }
-    this.setCameraLookAtComplex = function(x, y) {
-        that.keyboardHandlerComplex.setCameraLookAtComplex(x,y);
-    }
-    this.setShiftPressed = function(shiftPressed) {
-        that.keyboardHandlerComplex.setShiftPressed(shiftPressed);
-    }
+    this.keyboardHandlerComplex = new keyboardHandlerComplex(context);
 
     this.handleSequence = function(seq, codes, extraKey) {
         console.log("SEQUENCE: " + seq);
@@ -54,45 +41,45 @@ this.keyboardHandlers = function(camera, mediaUtils) {
         var opts = seq.substring(1);
         switch (seq[0]) {
             case 'M':   // reset
-                that.currentUniforms.uBlackMask.value = 0;
-                that.currentUniforms.uMaskType.value = 0;
+                that.context.currentUniforms.uBlackMask.value = 0;
+                that.context.currentUniforms.uMaskType.value = 0;
                 break;
             case 'B':
-                 that.currentUniforms.uBlackMask.value++;
-                 that.currentUniforms.uBlackMask.value = that.currentUniforms.uBlackMask.value%5 ;
+                 that.context.currentUniforms.uBlackMask.value++;
+                 that.context.currentUniforms.uBlackMask.value = that.context.currentUniforms.uBlackMask.value%5 ;
                break;
             default:
-                that.currentUniforms.uMaskType.value = parseInt(seq[0]);
+                that.context.currentUniforms.uMaskType.value = parseInt(seq[0]);
                 break;
         }
     }
     that.handleGeo = function(seq, codes) {
         switch (seq[0]) {
             case 'S':
-                that.cameraVectorLength = 1;
-                that.mediaUtils.toggleView("sphere");
+                that.context.mediaUtils.toggleView("sphere");
                 break;
             case 'T':
-                that.camera.position.set(-15.0, 1.0, 0.0);
-                that.cameraVectorLength = -1;
-                that.mediaUtils.toggleView("torus");
+                that.context.camera.position.set(-15.0, 1.0, 0.0);
+                that.context.mediaUtils.toggleView("torus");
                 break;
             case 'P':
-                that.cameraVectorLength = 1;
-                that.mediaUtils.toggleView("plane");
+                that.context.mediaUtils.toggleView("plane");
                 break;
         }
 
     }
     this.toggleDebugInfo = function() {
-    	that.currentUniforms.showFixedPoints.value = that.currentUniforms.showFixedPoints.value == 0 ? 1 : 0;
-    	if (that.currentUniforms.showFixedPoints.value == 0) {
+    	that.context.currentUniforms.showFixedPoints.value = that.context.currentUniforms.showFixedPoints.value == 0 ? 1 : 0;
+    	if (that.context.currentUniforms.showFixedPoints.value == 0) {
             $('.statusText').hide();
 		}
 		else {
             $('.statusText').show();
 		}
 
+    }
+    this.animate = function() {
+        that.keyboardHandlerComplex.animate();
     }
 
 }
