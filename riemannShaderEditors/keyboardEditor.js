@@ -24,7 +24,19 @@ this.keyboardContext = function (camera, mediaUtils) {
         that.currentUniforms = detailsObject.currentUniforms;
     }
     this.setCameraLookAtComplex = function(x, y) {
+        // this saves the current position in complex space that the camera is looking at.
         that.cameraLookAt = [x,y];
+    }
+    this.lookAtComplex = function(x,y) {
+        // this moves the camera to look at a point in complex space.
+        var p = complexToCartesian(x, y);
+
+        // all the signs are flipped because the camera is not sitting at the origin.
+        // it is sitting 1 unit away from the origin, looking thru the origin at the
+        // opposite side of the sphere.
+        // also the y axis is up.
+
+        that.camera.position.set(-p[0], -p[2], -p[1]);
     }
 
     this.fullReset = function() {

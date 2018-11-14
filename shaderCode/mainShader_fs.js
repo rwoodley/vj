@@ -62,7 +62,7 @@ vec4 applyMask(vec2 uv, vec2 complexPoint) {        // subtracting t2 from t1.
     // uMaskType == 1 - Delay Mask. Use black mask to change high-lights. uses iChannelDelayMask1.
     // uMaskType == 2 - green mask. supposedly.
     // uMaskType == 3 - Diff vs saved still (iChannelStillMask1).
-    // uMaskType == 4 - riple delay mask, uses iChannelDelayMask1 & iChannelDelayMask2 & iChannelDelayMask3
+    // uMaskType == 4 - triple delay mask, uses iChannelDelayMask1 & iChannelDelayMask2 & iChannelDelayMask3
     // uMaskType == 5 - Just like 1 but the background changes colors constantly.
     vec4 textureValue;
     if (uNadirMask == 1) {

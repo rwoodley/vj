@@ -49,25 +49,27 @@ this.keyboardHandlerComplex = function(context) {
                 that.context.currentUniforms.mobiusEffectsOnOff.value = 1
                 that.e2 = [that.context.cameraLookAt[0], that.context.cameraLookAt[1]];
                 break;
-            case 'X':   // RESET
+            case 'Q':   // RESET
                 that.context.currentUniforms.mobiusEffectsOnOff.value = 0;
                 that.e1 = [0,0];
                 that.e2 = [100,100];
                 that.setLoxoPoint(1,0);
-                break;
-            case 'T':   // TINY PLANET
-                that.context.currentUniforms.mobiusEffectsOnOff.value = 1
-                that.e1 = [0,0];
-                that.e2 = [100,100];
-                that.setUniformsFromPoints();
-                that.zoom(.8);
                 break;
             case 'G':   // GIANT PLANET
                 that.context.currentUniforms.mobiusEffectsOnOff.value = 1
                 that.e1 = [0,0];
                 that.e2 = [100,100];
                 that.setUniformsFromPoints();
+                that.zoom(.8);
+                that.context.lookAtComplex(100,100);
+                break;
+            case 'T':   // TINY PLANET
+                that.context.currentUniforms.mobiusEffectsOnOff.value = 1
+                that.e1 = [0,0];
+                that.e2 = [100,100];
+                that.setUniformsFromPoints();
                 that.zoom(1.25);
+                that.context.lookAtComplex(0,0);
                break;
         }
     }

@@ -36,7 +36,8 @@ function cannedRun(scene) {
 
         // overall defaults
         this.showMirrorBall = false;
-        that.hideAllControls = mode != null;
+//        that.hideAllControls = mode != null;
+        that.hideAllControls = true;
         if (mode == null) {
             this.createMode = true;
             mode = 'stream';

@@ -40,7 +40,7 @@ this.keyboardHandlers = function(context) {
     that.handleMask = function(seq, codes) {
         var opts = seq.substring(1);
         switch (seq[0]) {
-            case 'M':   // reset
+            case 'Q':   // reset
                 that.context.currentUniforms.uBlackMask.value = 0;
                 that.context.currentUniforms.uMaskType.value = 0;
                 break;
@@ -48,7 +48,7 @@ this.keyboardHandlers = function(context) {
                  that.context.currentUniforms.uBlackMask.value++;
                  that.context.currentUniforms.uBlackMask.value = that.context.currentUniforms.uBlackMask.value%5 ;
                break;
-            default:
+            default:    // numbers work here, 1->5.
                 that.context.currentUniforms.uMaskType.value = parseInt(seq[0]);
                 break;
         }
