@@ -269,6 +269,21 @@ function mediaUtils(canned, scene, camera,
             TRANSFORM.meshInventory.morphFunction(this.animationFrame);
             for (var verticalMirrorName in _verticalMirror)
                 _verticalMirror[verticalMirrorName].render();
+
+            // you can control the camera by clicking on icons. The effect of that is handled here.
+            // or you can use keystrokes, that is handled in cameraContext.
+            // I don't know what would happen if you do both. so don't.
+            that.camera.lookAt(new THREE.Vector3(0,0,0));
+            TRANSFORM.meshInventory.morphFunction(this.animationFrame);
+            rotateCameraY(that.camera, that.rotateYAmount);
+            rotateCameraUpDown(that.camera, that.rotateXAmount);
+            rotateCameraZ(that.camera, that.rotateZAmount);
+
+            // only the legacy editor handle this for now. so has no effect.
+            that.camera.position.x = that.cameraZoomAmount*that.camera.position.x;
+            that.camera.position.y = that.cameraZoomAmount*that.camera.position.y;
+            that.camera.position.z = that.cameraZoomAmount*that.camera.position.z;
+
             TRANSFORM.camera.animate();
         }
         var obj = that.videoManager.animate(that.activeMeshName);
