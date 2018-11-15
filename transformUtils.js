@@ -13,14 +13,14 @@ function transformUtils(camera,
             //that.currentUniforms.showFixedPoints.value = 0;
             $('.statusText').hide();
         }
-        if (e.keyCode == 88 && extraKey == 16) {  // shift-X - start/stop recording
-            if (!that.recording) {
-                that.startRecording();
-            }
-            else {
-                that.stopRecording();
-            }
-        }
+//        if (e.keyCode == 88 && extraKey == 16) {  // shift-X - start/stop recording
+//            if (!that.recording) {
+//                that.startRecording();
+//            }
+//            else {
+//                that.stopRecording();
+//            }
+//        }
 //        that.legacyEditor.onkeydown(e, extraKey);
         that.keyboardEditor.onkeydown(e, extraKey);
         e.preventDefault();

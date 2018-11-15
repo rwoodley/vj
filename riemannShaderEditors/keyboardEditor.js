@@ -107,8 +107,14 @@ this.keyboardEditor = function(
         that.cameraContext.onkeydown(e, extraKey);
 
         // normally a 2 letter code unless starts with Z. Then collects until next Z. R resets always.
-        var x = event.charCode || event.keyCode;  // Get the Unicode value
+        var x = e.charCode || e.keyCode;  // Get the Unicode value
         var letter = String.fromCharCode(x);  // Convert the value into a character
+        console.log("letter is " + letter);
+        if (e.keyCode == 187) letter = '+';
+        if (e.keyCode == 189) letter = '-';
+        if (e.keyCode == 188) letter = ',';
+        if (e.keyCode == 190) letter = '.';
+        if (e.keyCode == 191) letter = '/';
 
         if (letter == 'R') {
             that.extendedSequence = false;

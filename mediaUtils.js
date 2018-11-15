@@ -367,7 +367,7 @@ function mediaUtils(canned, scene, camera,
     }
     this.updateReimannDomeForVideoName = function(meshName, pid, pidType) {
         var textureConsumers = [function(videoTexture) {
-            TRANSFORM.meshInventory.setTexture(meshName, videoTexture, 
+            TRANSFORM.meshInventory.setTexture(meshName, videoTexture,
                 that.buildMaterialForTexture);
         }];
         if (pidType == 'stream') {

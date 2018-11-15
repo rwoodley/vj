@@ -8,48 +8,114 @@ this.keyboardHandlerComplex = function(context) {
 
     that.handleSequence = function(seq, codes) {
         var opts = seq.substring(1);
-        that.context.currentUniforms.showFixedPoints.value = 0;
+        var uni = that.context.currentUniforms;
+        uni.showFixedPoints.value = 0;
         switch (seq[0]) {
            case 'L':   // loxo points
-                that.currentUniforms.mobiusEffectsOnOff.value = 1
+                uni.mobiusEffectsOnOff.value = 1
                 this.trackingLoxoPoints = !this.trackingLoxoPoints;
 
                 break;
             case '1':
-                that.context.currentUniforms.mobiusEffectsOnOff.value = 1
+                uni.mobiusEffectsOnOff.value = 1
                 that.e1 = [that.context.cameraLookAt[0], that.context.cameraLookAt[1]];
                 that.setUniformsFromPoints();
                 break;
             case '2':
-                that.context.currentUniforms.mobiusEffectsOnOff.value = 1
+                uni.mobiusEffectsOnOff.value = 1
                 that.e2 = [that.context.cameraLookAt[0], that.context.cameraLookAt[1]];
                 break;
             case 'Q':   // RESET
                 this.trackingLoxoPoints = false;
-                that.context.currentUniforms.mobiusEffectsOnOff.value = 0;
+                uni.mobiusEffectsOnOff.value = 0;
                 that.e1 = [0,0];
                 that.e2 = [100,100];
                 that.setLoxoPoint(1,0);
+                uni.complexEffect3OnOff.value = 0;
+                uni.complexEffect4OnOff.value = 0;
+                uni.complexEffect5OnOff.value = 0;
+                uni.schottkyEffectOnOff.value = 0;
                 break;
             case 'G':   // GIANT PLANET
-                that.context.currentUniforms.mobiusEffectsOnOff.value = 1
-                that.e1 = [0,0];
-                that.e2 = [100,100];
-                that.setUniformsFromPoints();
+                that.enableMobius();
                 that.zoom(.8);
                 that.context.lookAtComplex(100,100);
                 break;
             case 'T':   // TINY PLANET
-                that.context.currentUniforms.mobiusEffectsOnOff.value = 1
-                that.e1 = [0,0];
-                that.e2 = [100,100];
-                that.setUniformsFromPoints();
+                that.enableMobius();
                 that.zoom(1.25);
                 that.context.lookAtComplex(0,0);
-               break;
+                break;
+           case '+':
+                that.enableMobius();
+                uni.complexEffect1OnOff.value += 1;
+                break;
+           case '-':
+                that.enableMobius();
+                uni.complexEffect1OnOff.value -= 1;
+                break;
+            case '3':
+                that.enableMobius();
+                uni.complexEffect3OnOff.value = uni.complexEffect3OnOff.value == 0 ? 1 : 0;
+                break;
+            case '4':
+                that.enableMobius();
+                uni.complexEffect4OnOff.value = uni.complexEffect4OnOff.value == 0 ? 1 : 0;
+                break;
+            case '5':
+                uni.mobiusEffectsOnOff.value = 1
+                that.e1 = [0,1];
+                that.e2 = [0,-1];
+                that.setUniformsFromPoints();
+                uni.complexEffect5OnOff.value = uni.complexEffect5OnOff.value == 0 ? 1 : 0;
+                break;
+            case '6':
+                that.enableMobius();
+                uni.schottkyEffectOnOff.value = uni.schottkyEffectOnOff.value == 0 ? 1 : 0;
+                break;
+            case '7':
+                that.enableMobius();
+                uni.schottkyEffectOnOff.value = uni.schottkyEffectOnOff.value == 0 ? 2 : 0;
+                break;
+            case '8':
+                that.enableMobius();
+                uni.schottkyEffectOnOff.value = uni.schottkyEffectOnOff.value == 0 ? 3 : 0;
+                break;
+            case '9':
+                that.enableMobius();
+                uni.schottkyEffectOnOff.value = uni.schottkyEffectOnOff.value == 0 ? 4 : 0;
+                break;
+            case ',':   // rotate left around fixed points.
+                that.rotateLeft();
+                break;
+            case '.':   // rotate right around fixed points.
+                that.rotateRight();
+                break;
+            case '/':   // stop rotate.
+                that.rotationOff();
+                break;
         }
     }
-
+    this.enableMobius = function() {
+        that.context.currentUniforms.mobiusEffectsOnOff.value = 1;
+        that.e1 = [0,0];
+        that.e2 = [100,100];
+        that.setUniformsFromPoints();
+    }
+    this.rotateLeft = function() { that.rotate(-1); }
+    this.rotateRight = function() { that.rotate(1); }
+    this.rotationOff = function() {
+		that.context.detailsObject.rotateDirection = 0;
+    	that.context.currentUniforms.iRotationAmount.value = 0;
+    }
+    this.rotate = function(direction) {
+    	if (direction == 0) {
+    		that.context.detailsObject.rotateDirection = 0;
+    	}
+    	else {
+        	that.context.detailsObject.rotateDirection += direction;
+    	}
+    }
     that.MouseWheelHandler = function(e) {
         if (that.context.shiftPressed && that.context.currentUniforms.mobiusEffectsOnOff.value == 1) {
             console.log(e.deltaX, e.deltaY, e.deltaZ, that.lastDeltaX);
