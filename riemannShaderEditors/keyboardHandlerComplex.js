@@ -82,8 +82,12 @@ this.keyboardHandlerComplex = function(context) {
                 uni.schottkyEffectOnOff.value = uni.schottkyEffectOnOff.value == 0 ? 3 : 0;
                 break;
             case '9':
-                that.enableMobius();
-                uni.schottkyEffectOnOff.value = uni.schottkyEffectOnOff.value == 0 ? 4 : 0;
+                that.e1 = [-1,0];
+                that.e2 = [1,0];
+                uni.schottkyEffectOnOff.value = uni.schottkyEffectOnOff.value == 0 ? 1 : 0;
+                uni.iRotationAmount.value = 10. * Math.PI / 2.;
+                that.context.currentUniforms.mobiusEffectsOnOff.value = 1;
+                that.setUniformsFromPoints();
                 break;
             case ',':   // rotate left around fixed points.
                 that.rotateLeft();

@@ -123,8 +123,12 @@ this.keyboardEditor = function(
             document.getElementById('wordText').innerHTML = '';
             return;
         }
-        if (letter == 'Q') {
+        if (letter == 'W') {
             that.context.fullReset();
+            that.cs = '';
+            that.codes =[];
+            document.getElementById('wordText').innerHTML = '';
+            return;
         }
         if (letter == 'Z') {
             if (that.extendedSequence) {
